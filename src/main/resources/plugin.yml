@@ -1,0 +1,14 @@
+name: ServerCore
+version: '${project.version}'
+main: com.github.carthax08.servercore.Main
+authors: [ CarThax08 ]
+commands:
+  tokens:
+    description: Token command
+    usage: /tokens [add, set, remove, clear] [player] [amount]
+  prestige:
+    description: Prestige command
+  autosmelt:
+    description: Autosmelt command
+  enchants:
+    usage: Enchants command

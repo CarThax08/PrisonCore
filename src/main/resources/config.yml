@@ -1,0 +1,7 @@
+prestiges:
+  1:
+    cost: 5000000
+    grantperms:
+      - essentials.warp.prestige1
+settings:
+  lastRankGroupName: test
