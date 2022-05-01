@@ -29,6 +29,7 @@ public class PrestigeCommand implements CommandExecutor {
                 if (playerData != null) {
                     System.out.println("3");
                     Prestige nextPrestige = PrestigeHandler.getPrestigeByIndex(playerData.pindex + 1);
+                    assert nextPrestige != null;
                     if (playerData.getMoney() >= nextPrestige.cost) {
                         System.out.println("4");
                         LuckPerms perms = Main.getPerms();

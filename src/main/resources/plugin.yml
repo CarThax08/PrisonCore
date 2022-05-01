@@ -1,4 +1,4 @@
-name: ServerCore
+name: PrisonCore
 version: '${project.version}'
 main: com.github.carthax08.servercore.Main
 authors: [ CarThax08 ]

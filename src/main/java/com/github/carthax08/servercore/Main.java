@@ -44,7 +44,7 @@ public final class Main extends JavaPlugin {
 
         }
 
-        DataStore.lastRankGroup =getConfig().getString("settings.lastRankGroupName");
+        DataStore.lastRankGroup = getConfig().getString("settings.lastRankGroupName");
 
         registerCommands();
         registerEvents();
@@ -63,7 +63,7 @@ public final class Main extends JavaPlugin {
         getCommand("autosmelt").setExecutor(new AutoSmeltCommand());
         getCommand("prestige").setExecutor(new PrestigeCommand());
         getCommand("tokens").setExecutor(new TokensCommand());
-        getCommand("enchants").setExecutor(new EnchantsCommand());
+        //getCommand("enchants").setExecutor(new EnchantsCommand());
         getCommand("tokens").setTabCompleter(new TokensTabCompleter());
 
     }

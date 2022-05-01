@@ -9,7 +9,7 @@
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>ServerCore</name>
+    <name>PrisonCore</name>
 
     <properties>
         <java.version>1.8</java.version>
@@ -50,6 +50,7 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+        <finalName>PrisonCore.${version}.snapshot</finalName>
     </build>
 
     <repositories>

@@ -18,6 +18,7 @@ public class TokensCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.GREEN + "Tokens: " + DataStore.getPlayerData((Player) sender).tokenBalance);
             return true;
         }
+        if(!sender.hasPermission("tokens.edit")){return true;}
         if(args.length < 3){
             sender.sendMessage(ChatColor.RED + command.getUsage());
         }else{
@@ -40,19 +41,18 @@ public class TokensCommand implements CommandExecutor {
 
     private void handleSet(String[] args) {
         Player player = Bukkit.getPlayer(args[1]);
-        Double amount = Double.parseDouble(args[2]);
-        DataStore.getPlayerData(player).tokenBalance = amount;
+        DataStore.getPlayerData(player).tokenBalance = Double.parseDouble(args[2]);
         DataStore.getPlayerData(player).savePlayerData(false);
     }
     private void handleAdd(String[] args) {
         Player player = Bukkit.getPlayer(args[1]);
-        Double amount = Double.parseDouble(args[2]);
+        double amount = Double.parseDouble(args[2]);
         DataStore.getPlayerData(player).tokenBalance += amount;
         DataStore.getPlayerData(player).savePlayerData(false);
     }
     private void handleRemove(String[] args) {
         Player player = Bukkit.getPlayer(args[1]);
-        Double amount = Double.parseDouble(args[2]);
+        double amount = Double.parseDouble(args[2]);
         DataStore.getPlayerData(player).tokenBalance -= amount;
         DataStore.getPlayerData(player).savePlayerData(false);
     }

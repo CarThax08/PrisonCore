@@ -21,6 +21,7 @@ public class Util {
     public static ServerPlayer loadPlayerData(Player player) throws IOException {
         return PlayerDataHandler.loadPlayerData(DataFileHandler.loadOrCreatePlayerFile(player), player);
     }
+    // SCRAPPED, MIGHT ADD IN AN UPDATE
     public static void openEnchantGui(Player player){
         Inventory inventory = Bukkit.createInventory(null, InventoryType.CHEST, "Enchants");
         ItemMeta heldItemMeta = player.getInventory().getItemInMainHand().getItemMeta();
@@ -73,4 +74,5 @@ public class Util {
         }
         player.openInventory(inventory);
     }
+
 }

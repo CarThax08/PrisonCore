@@ -14,16 +14,18 @@ public class ServerPlayer {
     public double tokenBalance;
     public Prestige prestige;
     public int pindex;
+    public boolean autosmelt;
     public YamlConfiguration config;
 
-    public ServerPlayer(Player _player, Double _tokenBalance, int prestigeIndex, YamlConfiguration _config){
+    public ServerPlayer(Player _player, Double _tokenBalance, int _prestigeIndex, boolean _autosmelt, YamlConfiguration _config){
         player = _player;
         tokenBalance = _tokenBalance;
         if(!PrestigeHandler.prestiges.isEmpty()) {
-            prestige = PrestigeHandler.getPrestigeByIndex(prestigeIndex);
+            prestige = PrestigeHandler.getPrestigeByIndex(_prestigeIndex);
         }
         config = _config;
-        pindex = prestigeIndex;
+        pindex = _prestigeIndex;
+        autosmelt = _autosmelt;
     }
 
     public void savePlayerData(Boolean toFile){
