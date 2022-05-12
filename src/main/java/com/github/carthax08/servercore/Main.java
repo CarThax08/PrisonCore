@@ -43,7 +43,7 @@ public final class Main extends JavaPlugin {
             perms = permsProvider.getProvider();
         }
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
-            new PluginPlaceholderExpansion(this);
+            new PluginPlaceholderExpansion(this).register();
         }
 
         DataStore.lastRankGroup = getConfig().getString("settings.lastRankGroupName");
