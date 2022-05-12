@@ -16,6 +16,7 @@ public class PrestigeHandler {
 
     public static void loadPrestiges(YamlConfiguration config){
         ConfigurationSection prestigesConfig = config.getConfigurationSection("prestiges");
+        assert prestigesConfig != null;
         for (String key : prestigesConfig.getKeys(false)) {
             prestiges.add(deserialize(prestigesConfig.getConfigurationSection(key), Integer.parseInt(key)));
         }

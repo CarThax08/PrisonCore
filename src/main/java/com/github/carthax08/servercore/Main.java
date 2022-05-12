@@ -9,6 +9,7 @@ import com.github.carthax08.servercore.events.GUIClickEvent;
 import com.github.carthax08.servercore.events.OnBlockBreak;
 import com.github.carthax08.servercore.events.OnPlayerJoin;
 import com.github.carthax08.servercore.events.OnPlayerLeave;
+import com.github.carthax08.servercore.placeholders.PluginPlaceholderExpansion;
 import com.github.carthax08.servercore.prestige.PrestigeHandler;
 import com.github.carthax08.servercore.util.DataStore;
 import net.luckperms.api.LuckPerms;
@@ -40,7 +41,9 @@ public final class Main extends JavaPlugin {
         }
         if(permsProvider != null){
             perms = permsProvider.getProvider();
-
+        }
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
+            new PluginPlaceholderExpansion(this);
         }
 
         DataStore.lastRankGroup = getConfig().getString("settings.lastRankGroupName");
