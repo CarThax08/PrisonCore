@@ -8,10 +8,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -28,6 +25,7 @@ import java.util.Random;
 public class OnBlockBreak implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
+        if(event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         RegionContainer manager = WorldGuardPlugin.inst().getRegionContainer();
         RegionQuery query = manager.createQuery();
         ApplicableRegionSet set = query.getApplicableRegions(event.getBlock().getLocation());

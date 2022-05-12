@@ -1,0 +1,13 @@
+#Configuration file for the /crates GUI
+gui:
+  slots:
+    #0 for the top left slot 26 for the bottom right slot. No filler.
+    1:
+      item: CHEST
+      name: Test Crate
+      lore:
+        - Lore goes here, this is just a test
+        - Line 2
+        - Line 3
+      tokencost: 100
+      command: "crate key %player% Test"

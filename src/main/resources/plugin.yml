@@ -2,6 +2,7 @@ name: PrisonCore
 version: '${project.version}'
 main: com.github.carthax08.servercore.Main
 authors: [ CarThax08 ]
+api-version: 1.18
 commands:
   tokens:
     description: Token command
@@ -11,4 +12,7 @@ commands:
   autosmelt:
     description: Autosmelt command
   enchants:
-    usage: Enchants command
+    description: Enchants command
+  crates:
+    description: Crates Command
+    usage: /crates

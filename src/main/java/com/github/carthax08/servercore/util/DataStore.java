@@ -1,10 +1,11 @@
 package com.github.carthax08.servercore.util;
 
 import com.github.carthax08.servercore.data.ServerPlayer;
-import net.luckperms.api.model.group.Group;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class DataStore {
@@ -15,6 +16,8 @@ public class DataStore {
         return playerData.get(player);
     }
     public static String lastRankGroup;
+
+    public static Map<ItemStack, String> cratesGuiCommands = new HashMap<>();
 
 
 }

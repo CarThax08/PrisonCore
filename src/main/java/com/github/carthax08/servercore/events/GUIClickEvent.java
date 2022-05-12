@@ -3,6 +3,8 @@ package com.github.carthax08.servercore.events;
 import com.github.carthax08.servercore.CustomEnchantment;
 import com.github.carthax08.servercore.data.ServerPlayer;
 import com.github.carthax08.servercore.util.DataStore;
+import com.github.carthax08.servercore.util.PlayerDataHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -18,16 +20,31 @@ import java.util.List;
 public class GUIClickEvent implements Listener {
     @EventHandler
     public void guiClickEvent(InventoryClickEvent event){
-        if(event.getInventory().getTitle().equalsIgnoreCase("enchants")){
+        if(!(event.getWhoClicked() instanceof Player)){
+            return;
+        }
+        if(event.getView().getTitle().equalsIgnoreCase("Buy Keys")){
             event.setCancelled(true);
-            for(CustomEnchantment enchant : CustomEnchantment.values()){
-                if(event.getSlot() == enchant.slot){
-                    handleEnchant(enchant, (Player) event.getView().getPlayer());
+            ItemStack item = event.getInventory().getItem(event.getSlot());
+            if(DataStore.cratesGuiCommands.containsKey(item)){
+                ServerPlayer player = DataStore.getPlayerData((Player) event.getWhoClicked());
+                for(String string : item.getItemMeta().getLore()){
+                    if(!string.contains("Cost:")){
+                        continue;
+                    }
+                    int cost = Integer.parseInt(string.replace(ChatColor.GOLD + "Cost: ", ""));
+                    if(!(player.tokenBalance >= cost)){
+                        event.getWhoClicked().sendMessage(ChatColor.RED + "You do not have enough tokens for that!");
+                        return;
+                    }
+                    player.tokenBalance -= cost;
                 }
+
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), DataStore.cratesGuiCommands.get(item));
             }
         }
     }
-
+/*SCRAPPED, MAY ADD LATER
     private void handleEnchant(CustomEnchantment enchant, Player player) {
         ServerPlayer playerData = DataStore.getPlayerData(player);
         if(playerData.tokenBalance <= enchant.price){
@@ -69,4 +86,5 @@ public class GUIClickEvent implements Listener {
         itemInMainHand.setItemMeta(meta);
         player.sendMessage(ChatColor.GREEN + "Successfully enchanted item for " + enchant.price + " tokens!");
     }
+ */
 }

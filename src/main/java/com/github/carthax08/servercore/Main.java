@@ -1,11 +1,10 @@
 package com.github.carthax08.servercore;
 
 import com.github.carthax08.servercore.commands.AutoSmeltCommand;
-import com.github.carthax08.servercore.commands.EnchantsCommand;
+import com.github.carthax08.servercore.commands.CratesCommand;
 import com.github.carthax08.servercore.commands.PrestigeCommand;
 import com.github.carthax08.servercore.commands.TokensCommand;
-import com.github.carthax08.servercore.commands.tabcomplete.TokensTabCompleter;
-import com.github.carthax08.servercore.data.ServerPlayer;
+import com.github.carthax08.servercore.data.files.CratesFileHandler;
 import com.github.carthax08.servercore.events.GUIClickEvent;
 import com.github.carthax08.servercore.events.OnBlockBreak;
 import com.github.carthax08.servercore.events.OnPlayerJoin;
@@ -48,8 +47,13 @@ public final class Main extends JavaPlugin {
 
         registerCommands();
         registerEvents();
+        registerConfigurations();
         PrestigeHandler.loadPrestiges((YamlConfiguration) getConfig());
 
+    }
+
+    private void registerConfigurations() {
+        CratesFileHandler.loadOrCreate();
     }
 
     private void registerEvents() {
@@ -63,8 +67,8 @@ public final class Main extends JavaPlugin {
         getCommand("autosmelt").setExecutor(new AutoSmeltCommand());
         getCommand("prestige").setExecutor(new PrestigeCommand());
         getCommand("tokens").setExecutor(new TokensCommand());
+        getCommand("crates").setExecutor(new CratesCommand());
         //getCommand("enchants").setExecutor(new EnchantsCommand());
-        getCommand("tokens").setTabCompleter(new TokensTabCompleter());
 
     }
 

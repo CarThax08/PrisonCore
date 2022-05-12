@@ -42,7 +42,7 @@ public class ServerPlayer {
         }
     }
 
-    public double getMoney(){
+    public double getMoney() {
         return Main.getEcon().getBalance(player);
     }
 }
