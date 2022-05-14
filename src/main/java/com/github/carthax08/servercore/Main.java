@@ -37,7 +37,7 @@ public final class Main extends JavaPlugin {
         saveDefaultConfig();
         RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServicesManager().getRegistration(Economy.class);
         RegisteredServiceProvider<LuckPerms> permsProvider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-        getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&7[&6ServerCore&7] Server Core is starting. Please wait."));
+        getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&7[&6PrisonCore&7] Prison Core is starting. Please wait."));
         instance = this;
         if(economyProvider != null) {
             econ = economyProvider.getProvider();

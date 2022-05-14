@@ -44,12 +44,13 @@ public class GUIClickEvent implements Listener {
             }
         }
     }
-/*SCRAPPED, MAY ADD LATER
+    /*
+    May implement later.
     private void handleEnchant(CustomEnchantment enchant, Player player) {
         ServerPlayer playerData = DataStore.getPlayerData(player);
         if(playerData.tokenBalance <= enchant.price){
             player.sendMessage(ChatColor.RED + "You do not have enough tokens for this enchant!");
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 5f, 5f);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 5f, 5f);
             return;
         }
         ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
@@ -62,7 +63,8 @@ public class GUIClickEvent implements Listener {
             lore = meta.getLore();
             for (String string : meta.getLore()) {
                 if (string.contains(enchant.displayName)) {
-                    if (!string.contains("Token") && !enchant.displayName.contains("Token")) continue;
+                    if (string.contains("Token") && !enchant.displayName.contains("Token")) continue;
+                    assert lore != null;
                     int index = lore.indexOf(string);
                     lore.remove(string);
                     String[] parts = string.split(" ");
@@ -86,5 +88,5 @@ public class GUIClickEvent implements Listener {
         itemInMainHand.setItemMeta(meta);
         player.sendMessage(ChatColor.GREEN + "Successfully enchanted item for " + enchant.price + " tokens!");
     }
- */
+     */
 }
