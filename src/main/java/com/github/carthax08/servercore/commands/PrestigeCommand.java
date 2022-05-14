@@ -32,6 +32,10 @@ public class PrestigeCommand implements CommandExecutor {
                     assert nextPrestige != null;
                     if (playerData.getMoney() >= nextPrestige.cost) {
                         System.out.println("4");
+                        if(!playerData.removeMoney(nextPrestige.cost)){
+                            player.sendMessage(ChatColor.RED + "An unknown error has occured when trying to take money away. Prestige did not succeed.");
+                            return true;
+                        }
                         LuckPerms perms = Main.getPerms();
                         User user = perms.getPlayerAdapter(Player.class).getUser(player);
                         user.data().remove(Node.builder("group." + DataStore.lastRankGroup).build());

@@ -12,7 +12,8 @@ public class PlayerDataHandler {
         double tokens = config.getDouble("tokens");
         int prestigeIndex = config.getInt("prestige");
         boolean autosmelt = config.getBoolean("autosmelt");
+        double multi = config.getDouble("multiplier");
 
-        return new ServerPlayer(player, tokens, prestigeIndex, autosmelt, config);
+        return new ServerPlayer(player, tokens, prestigeIndex, autosmelt, config, multi);
     }
 }

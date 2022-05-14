@@ -1,10 +1,9 @@
 package com.github.carthax08.servercore;
 
-import com.github.carthax08.servercore.commands.AutoSmeltCommand;
-import com.github.carthax08.servercore.commands.CratesCommand;
-import com.github.carthax08.servercore.commands.PrestigeCommand;
-import com.github.carthax08.servercore.commands.TokensCommand;
+import com.github.carthax08.servercore.commands.*;
 import com.github.carthax08.servercore.data.files.CratesFileHandler;
+import com.github.carthax08.servercore.data.files.DataFileHandler;
+import com.github.carthax08.servercore.data.files.PricesFileHandler;
 import com.github.carthax08.servercore.events.GUIClickEvent;
 import com.github.carthax08.servercore.events.OnBlockBreak;
 import com.github.carthax08.servercore.events.OnPlayerJoin;
@@ -12,6 +11,8 @@ import com.github.carthax08.servercore.events.OnPlayerLeave;
 import com.github.carthax08.servercore.placeholders.PluginPlaceholderExpansion;
 import com.github.carthax08.servercore.prestige.PrestigeHandler;
 import com.github.carthax08.servercore.util.DataStore;
+import com.github.carthax08.servercore.util.PlayerDataHandler;
+import com.github.carthax08.servercore.util.Util;
 import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -20,6 +21,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
 
 
 public final class Main extends JavaPlugin {
@@ -52,11 +55,23 @@ public final class Main extends JavaPlugin {
         registerEvents();
         registerConfigurations();
         PrestigeHandler.loadPrestiges((YamlConfiguration) getConfig());
+        try {
+            loadAlreadyOnlinePlayers();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
+    }
+
+    private void loadAlreadyOnlinePlayers() throws IOException {
+        for (Player player : Bukkit.getOnlinePlayers()){
+            Util.loadPlayerData(player);
+        }
     }
 
     private void registerConfigurations() {
         CratesFileHandler.loadOrCreate();
+        PricesFileHandler.loadOrCreate();
     }
 
     private void registerEvents() {
@@ -71,6 +86,7 @@ public final class Main extends JavaPlugin {
         getCommand("prestige").setExecutor(new PrestigeCommand());
         getCommand("tokens").setExecutor(new TokensCommand());
         getCommand("crates").setExecutor(new CratesCommand());
+        getCommand("sellall").setExecutor(new SellCommand());
         //getCommand("enchants").setExecutor(new EnchantsCommand());
 
     }
@@ -82,7 +98,6 @@ public final class Main extends JavaPlugin {
 
             DataStore.getPlayerData(player).savePlayerData(true);
             DataStore.playerData.remove(player);
-
         }
     }
 

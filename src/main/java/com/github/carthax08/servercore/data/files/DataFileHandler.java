@@ -19,12 +19,16 @@ public class DataFileHandler {
         }
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         if(!config.isSet("tokens")){
-            System.out.println("1");
             config.set("tokens", 0d);
         }
         if(!config.isSet("prestige")){
-            System.out.println("2");
             config.set("prestige", 0);
+        }
+        if(!config.isSet("autosmelt")){
+            config.set("autosmelt", false);
+        }
+        if(!config.isSet("multiplier")){
+            config.set("multiplier", 1d);
         }
         return config;
     }
@@ -32,7 +36,6 @@ public class DataFileHandler {
     public static void savePlayerDataToFile(ServerPlayer player) throws IOException {
         File file = new File(Main.getInstance().getDataFolder() + "/players/" + player.player.getUniqueId() + ".yml");
         player.config.save(file);
-        System.out.println(player.config.getDouble("tokens"));
 
     }
 

@@ -10,11 +10,15 @@ commands:
     description: Token command
     usage: /tokens [add, set, remove, clear] [player] [amount]
   prestige:
-    description: Prestige command
+    description: Prestige to restart with a money boost!
+    usage: /prestige
   autosmelt:
-    description: Autosmelt command
+    description: Toggle Autosmelt
   enchants:
     description: Enchants command
   crates:
-    description: Crates Command
+    description: Buy crate keys with tokens!
     usage: /crates
+  sellall:
+    description: Sell all your items!
+    usage: /sellall
