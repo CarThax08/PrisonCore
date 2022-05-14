@@ -22,3 +22,6 @@ commands:
   sellall:
     description: Sell all your items!
     usage: /sellall
+  vote:
+    description: Get the links to vote for our server!
+    usage: /vote

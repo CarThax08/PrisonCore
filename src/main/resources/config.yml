@@ -3,5 +3,8 @@ prestiges:
     cost: 5000000
     grantperms:
       - essentials.warp.prestige1
+votelinks:
+  - 'https://example.com/vote'
+  - 'https://example.com/vote2'
 settings:
   lastRankGroupName: test

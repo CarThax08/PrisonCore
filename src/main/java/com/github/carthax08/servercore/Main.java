@@ -87,6 +87,7 @@ public final class Main extends JavaPlugin {
         getCommand("tokens").setExecutor(new TokensCommand());
         getCommand("crates").setExecutor(new CratesCommand());
         getCommand("sellall").setExecutor(new SellCommand());
+        getCommand("vote").setExecutor(new VoteCommand());
         //getCommand("enchants").setExecutor(new EnchantsCommand());
 
     }
