@@ -3,6 +3,7 @@ package com.github.carthax08.servercore.placeholders;
 import com.github.carthax08.servercore.Main;
 import com.github.carthax08.servercore.util.DataStore;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,6 +46,9 @@ public class PluginPlaceholderExpansion extends PlaceholderExpansion {
         }
         if(params.equalsIgnoreCase("prestige")){
             return String.valueOf(DataStore.getPlayerData(player.getPlayer()).pindex);
+        }
+        if(params.equalsIgnoreCase("rankprefix")){
+            return ChatColor.translateAlternateColorCodes('&', DataStore.getPlayerData(player.getPlayer()).rank.prefix);
         }
         return null; // Placeholder is unknown by the Expansion
     }

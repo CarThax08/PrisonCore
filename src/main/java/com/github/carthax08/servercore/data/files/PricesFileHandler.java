@@ -16,7 +16,7 @@ public class PricesFileHandler {
     }
 
     public YamlConfiguration reloadConfig(){
-        File file = new File(Main.getInstance().getDataFolder(), "cratesui.yml");
+        File file = new File(Main.getInstance().getDataFolder(), "sellprices.yml");
         pricesConfig = YamlConfiguration.loadConfiguration(file);
         return pricesConfig;
     }

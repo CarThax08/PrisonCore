@@ -4,6 +4,8 @@ import com.github.carthax08.servercore.Main;
 import com.github.carthax08.servercore.data.files.DataFileHandler;
 import com.github.carthax08.servercore.prestige.Prestige;
 import com.github.carthax08.servercore.prestige.PrestigeHandler;
+import com.github.carthax08.servercore.rankup.Rank;
+import com.github.carthax08.servercore.rankup.RankHandler;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -18,7 +20,8 @@ public class ServerPlayer {
     public boolean autosmelt;
     public YamlConfiguration config;
     public double sellMultiplier;
-    public ServerPlayer(Player _player, Double _tokenBalance, int _prestigeIndex, boolean _autosmelt, YamlConfiguration _config, double _sellMultiplier){
+    public Rank rank;
+    public ServerPlayer(Player _player, Double _tokenBalance, int _prestigeIndex, boolean _autosmelt, YamlConfiguration _config, double _sellMultiplier, Rank _rank){
         player = _player;
         tokenBalance = _tokenBalance;
         if(!PrestigeHandler.prestiges.isEmpty()) {
@@ -28,6 +31,7 @@ public class ServerPlayer {
         pindex = _prestigeIndex;
         autosmelt = _autosmelt;
         sellMultiplier = _sellMultiplier;
+        rank = _rank;
     }
 
     public void savePlayerData(Boolean toFile){
@@ -37,6 +41,7 @@ public class ServerPlayer {
         }
         config.set("autosmelt", autosmelt);
         config.set("multiplier", sellMultiplier);
+        config.set("rank", RankHandler.getIndex(rank));
         if(toFile){
             try {
                 DataFileHandler.savePlayerDataToFile(this);

@@ -30,6 +30,9 @@ public class DataFileHandler {
         if(!config.isSet("multiplier")){
             config.set("multiplier", 1d);
         }
+        if(!config.isSet("rank")){
+            config.set("rank", 0);
+        }
         return config;
     }
 

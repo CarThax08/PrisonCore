@@ -25,3 +25,6 @@ commands:
   vote:
     description: Get the links to vote for our server!
     usage: /vote
+  rankup:
+    description: Go up through the ranks!
+    usage: /rankup

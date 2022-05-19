@@ -1,0 +1,17 @@
+ranks:
+  #Ranks start at index 0 and WILL NOT WORK PROPERLY for new players without an index 0!
+  0:
+    name: A
+    cost: 0
+    groupName: A
+    prefix: "test"
+  1:
+    name: B
+    cost: 20000
+    groupName: B
+    prefix: "test2"
+  2:
+    name: C
+    cost: 40000
+    groupName: C
+    prefix: "test3"

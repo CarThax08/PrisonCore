@@ -4,12 +4,14 @@ import com.github.carthax08.servercore.commands.*;
 import com.github.carthax08.servercore.data.files.CratesFileHandler;
 import com.github.carthax08.servercore.data.files.DataFileHandler;
 import com.github.carthax08.servercore.data.files.PricesFileHandler;
+import com.github.carthax08.servercore.data.files.RanksFileHandler;
 import com.github.carthax08.servercore.events.GUIClickEvent;
 import com.github.carthax08.servercore.events.OnBlockBreak;
 import com.github.carthax08.servercore.events.OnPlayerJoin;
 import com.github.carthax08.servercore.events.OnPlayerLeave;
 import com.github.carthax08.servercore.placeholders.PluginPlaceholderExpansion;
 import com.github.carthax08.servercore.prestige.PrestigeHandler;
+import com.github.carthax08.servercore.rankup.RankHandler;
 import com.github.carthax08.servercore.util.DataStore;
 import com.github.carthax08.servercore.util.PlayerDataHandler;
 import com.github.carthax08.servercore.util.Util;
@@ -55,6 +57,7 @@ public final class Main extends JavaPlugin {
         registerEvents();
         registerConfigurations();
         PrestigeHandler.loadPrestiges((YamlConfiguration) getConfig());
+        RankHandler.loadRanks();
         try {
             loadAlreadyOnlinePlayers();
         } catch (IOException e) {
@@ -72,6 +75,7 @@ public final class Main extends JavaPlugin {
     private void registerConfigurations() {
         CratesFileHandler.loadOrCreate();
         PricesFileHandler.loadOrCreate();
+        RanksFileHandler.loadOrCreate();
     }
 
     private void registerEvents() {
@@ -88,6 +92,7 @@ public final class Main extends JavaPlugin {
         getCommand("crates").setExecutor(new CratesCommand());
         getCommand("sellall").setExecutor(new SellCommand());
         getCommand("vote").setExecutor(new VoteCommand());
+        getCommand("rankup").setExecutor(new RankupCommand());
         //getCommand("enchants").setExecutor(new EnchantsCommand());
 
     }
