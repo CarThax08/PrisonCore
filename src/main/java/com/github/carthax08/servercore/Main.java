@@ -81,9 +81,9 @@ public final class Main extends JavaPlugin {
                     player.spigot().sendMessage(
                             ChatMessageType.ACTION_BAR,
                             new TextComponent(
-                                    backpackBarFormat
+                                    ChatColor.translateAlternateColorCodes('&', Main.backpackBarFormat
                                             .replace("%amount%", String.valueOf(playerData.getItemsInBackpack()))
-                                            .replace("%max%", String.valueOf(playerData.backpackSize)
+                                            .replace("%max%", String.valueOf(playerData.backpackSize))
                                     )
                             )
                     );

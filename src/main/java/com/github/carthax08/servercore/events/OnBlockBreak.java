@@ -70,9 +70,11 @@ public class OnBlockBreak implements Listener {
 
         event.getPlayer().spigot().sendMessage(
                 ChatMessageType.ACTION_BAR,
-                new TextComponent(Main.backpackBarFormat
-                        .replace("%amount%", String.valueOf(playerData.getItemsInBackpack()))
-                        .replace("%max%", String.valueOf(playerData.backpackSize))
+                new TextComponent(
+                        ChatColor.translateAlternateColorCodes('&', Main.backpackBarFormat
+                            .replace("%amount%", String.valueOf(playerData.getItemsInBackpack()))
+                            .replace("%max%", String.valueOf(playerData.backpackSize))
+                        )
                 )
         );
 
