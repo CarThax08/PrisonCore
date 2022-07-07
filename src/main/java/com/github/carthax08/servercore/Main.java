@@ -1,6 +1,7 @@
 package com.github.carthax08.servercore;
 
 import com.github.carthax08.servercore.commands.*;
+import com.github.carthax08.servercore.data.ServerPlayer;
 import com.github.carthax08.servercore.data.files.CratesFileHandler;
 import com.github.carthax08.servercore.data.files.DataFileHandler;
 import com.github.carthax08.servercore.data.files.PricesFileHandler;
@@ -16,6 +17,8 @@ import com.github.carthax08.servercore.util.DataStore;
 import com.github.carthax08.servercore.util.PlayerDataHandler;
 import com.github.carthax08.servercore.util.Util;
 import net.luckperms.api.LuckPerms;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,6 +26,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
 
@@ -32,6 +36,9 @@ public final class Main extends JavaPlugin {
     private static Main instance;
     private static LuckPerms perms;
     private static Economy econ;
+
+    public static String backpackBarFormat = "";
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -39,15 +46,16 @@ public final class Main extends JavaPlugin {
         saveDefaultConfig();
         RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServicesManager().getRegistration(Economy.class);
         RegisteredServiceProvider<LuckPerms> permsProvider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-        getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&7[&6PrisonCore&7] Prison Core is starting. Please wait."));
+        getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                "&7[&6PrisonCore&7] Prison Core is starting. Please wait."));
         instance = this;
-        if(economyProvider != null) {
+        if (economyProvider != null) {
             econ = economyProvider.getProvider();
         }
-        if(permsProvider != null){
+        if (permsProvider != null) {
             perms = permsProvider.getProvider();
         }
-        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new PluginPlaceholderExpansion(this).register();
         }
 
@@ -63,7 +71,27 @@ public final class Main extends JavaPlugin {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        new BukkitRunnable() {
 
+            @Override
+            public void run() {
+                // What you want to schedule goes here
+                for (Player player : Bukkit.getOnlinePlayers()){
+                    ServerPlayer playerData = DataStore.getPlayerData(player);
+                    player.spigot().sendMessage(
+                            ChatMessageType.ACTION_BAR,
+                            new TextComponent(
+                                    backpackBarFormat
+                                            .replace("%amount%", String.valueOf(playerData.getItemsInBackpack()))
+                                            .replace("%max%", String.valueOf(playerData.backpackSize)
+                                    )
+                            )
+                    );
+                }
+            }
+
+        }.runTaskTimer(this, 20, 20);
+        backpackBarFormat = getConfig().getString("settings.backpackBarFormat");
     }
 
     private void loadAlreadyOnlinePlayers() throws IOException {

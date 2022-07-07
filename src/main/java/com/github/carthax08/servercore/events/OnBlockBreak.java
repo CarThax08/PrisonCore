@@ -1,5 +1,6 @@
 package com.github.carthax08.servercore.events;
 
+import com.github.carthax08.servercore.Main;
 import com.github.carthax08.servercore.data.ServerPlayer;
 import com.github.carthax08.servercore.util.DataStore;
 import com.github.carthax08.servercore.util.Util;
@@ -9,6 +10,8 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -64,6 +67,14 @@ public class OnBlockBreak implements Listener {
             playerData.addItemToBackpack(item);
         }
         event.getBlock().setType(Material.AIR);
+
+        event.getPlayer().spigot().sendMessage(
+                ChatMessageType.ACTION_BAR,
+                new TextComponent(Main.backpackBarFormat
+                        .replace("%amount%", String.valueOf(playerData.getItemsInBackpack()))
+                        .replace("%max%", String.valueOf(playerData.backpackSize))
+                )
+        );
 
     }
 

@@ -8,3 +8,4 @@ votelinks:
   - 'https://example.com/vote2'
 settings:
   lastRankGroupName: test
+  backpackBarFormat: "&bYour backpack: &6%amount%&b/&6%max% &bBlocks"
