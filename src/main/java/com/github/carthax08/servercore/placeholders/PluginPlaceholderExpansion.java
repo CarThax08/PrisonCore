@@ -42,13 +42,16 @@ public class PluginPlaceholderExpansion extends PlaceholderExpansion {
             return String.valueOf(DataStore.getPlayerData(player.getPlayer()).tokenBalance);
         }
         if(params.equalsIgnoreCase("autosmelt")){
-            return DataStore.getPlayerData(player.getPlayer()).autosmelt ? "On" : "Off";
+            return DataStore.getPlayerData(player.getPlayer()).autosmelt ? ChatColor.GREEN + "On" : ChatColor.RED + "Off";
         }
         if(params.equalsIgnoreCase("prestige")){
             return String.valueOf(DataStore.getPlayerData(player.getPlayer()).pindex);
         }
         if(params.equalsIgnoreCase("rankprefix")){
             return ChatColor.translateAlternateColorCodes('&', DataStore.getPlayerData(player.getPlayer()).rank.prefix);
+        }
+        if(params.equalsIgnoreCase("sell_multiplier")){
+            return String.valueOf(DataStore.getPlayerData(player.getPlayer()).sellMultiplier);
         }
         return null; // Placeholder is unknown by the Expansion
     }
