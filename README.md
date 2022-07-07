@@ -1,2 +1,2 @@
-# ServerCore
-Github repo for PrisonCore (on here as ServerCore)
+# PrisonCore
+Github repo for PrisonCore
