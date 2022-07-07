@@ -16,9 +16,10 @@ commands:
     description: Toggle Autosmelt
   enchants:
     description: Enchants command
-  crates:
-    description: Buy crate keys with tokens!
+  tokenshop:
+    description: Buy items with tokens!
     usage: /crates
+    aliases: [ts, tshop]
   sellall:
     description: Sell all your items!
     usage: /sellall
@@ -28,3 +29,7 @@ commands:
   rankup:
     description: Go up through the ranks!
     usage: /rankup
+  backpacksize:
+    description: Change a player's backpack size
+    usage: /backpacksize [player] [add, set, remove] [amount]
+    aliases: [bps, bpsize]

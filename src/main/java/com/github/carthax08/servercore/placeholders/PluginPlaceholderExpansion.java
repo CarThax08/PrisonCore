@@ -53,6 +53,12 @@ public class PluginPlaceholderExpansion extends PlaceholderExpansion {
         if(params.equalsIgnoreCase("sell_multiplier")){
             return String.valueOf(DataStore.getPlayerData(player.getPlayer()).sellMultiplier);
         }
+        if(params.equalsIgnoreCase("autosell")){
+            return DataStore.getPlayerData(player.getPlayer()).autosell ? ChatColor.GREEN + "On" : ChatColor.RED + "Off";
+        }
+        if(params.equalsIgnoreCase("blocks_broken")){
+            return String.valueOf(DataStore.getPlayerData(player.getPlayer()).blocksBroken);
+        }
         return null; // Placeholder is unknown by the Expansion
     }
 }

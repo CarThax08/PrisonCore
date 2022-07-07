@@ -10,14 +10,14 @@ public class CratesFileHandler {
     public static YamlConfiguration cratesConfig;
 
     public static YamlConfiguration loadOrCreate(){
-        Main.getInstance().saveResource("cratesui.yml", false);
-        File file = new File(Main.getInstance().getDataFolder(), "cratesui.yml");
+        Main.getInstance().saveResource("tokenshop.yml", false);
+        File file = new File(Main.getInstance().getDataFolder(), "tokenshop.yml");
         cratesConfig = YamlConfiguration.loadConfiguration(file);
         return cratesConfig;
     }
 
     public YamlConfiguration reloadConfig(){
-        File file = new File(Main.getInstance().getDataFolder(), "cratesui.yml");
+        File file = new File(Main.getInstance().getDataFolder(), "tokenshop.yml");
         cratesConfig = YamlConfiguration.loadConfiguration(file);
         return cratesConfig;
     }

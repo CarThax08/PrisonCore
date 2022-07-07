@@ -89,7 +89,7 @@ public final class Main extends JavaPlugin {
         getCommand("autosmelt").setExecutor(new AutoSmeltCommand());
         getCommand("prestige").setExecutor(new PrestigeCommand());
         getCommand("tokens").setExecutor(new TokensCommand());
-        getCommand("crates").setExecutor(new CratesCommand());
+        getCommand("tokenshop").setExecutor(new CratesCommand());
         getCommand("sellall").setExecutor(new SellCommand());
         getCommand("vote").setExecutor(new VoteCommand());
         getCommand("rankup").setExecutor(new RankupCommand());

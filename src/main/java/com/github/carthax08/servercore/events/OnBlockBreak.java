@@ -1,5 +1,6 @@
 package com.github.carthax08.servercore.events;
 
+import com.github.carthax08.servercore.data.ServerPlayer;
 import com.github.carthax08.servercore.util.DataStore;
 import com.github.carthax08.servercore.util.Util;
 import com.sk89q.worldguard.bukkit.RegionContainer;
@@ -26,6 +27,13 @@ public class OnBlockBreak implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
         if(event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
+        ServerPlayer playerData = DataStore.getPlayerData(event.getPlayer());
+        if(playerData.getItemsInBackpack() >= playerData.backpackSize){
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(ChatColor.RED + "Your backpack is full! Use /sellall to sell!");
+            return;
+        }
+        playerData.blocksBroken++;
         RegionContainer manager = WorldGuardPlugin.inst().getRegionContainer();
         RegionQuery query = manager.createQuery();
         ApplicableRegionSet set = query.getApplicableRegions(event.getBlock().getLocation());
@@ -35,7 +43,7 @@ public class OnBlockBreak implements Listener {
             }
         }
         List<ItemStack> drops = new ArrayList<>();
-        if(DataStore.getPlayerData(event.getPlayer()).autosmelt){
+        if(playerData.autosmelt){
             for (ItemStack item : event.getBlock().getDrops()) {
                 ItemStack result = attemptSmelt(item);
                 drops.add(result != null ? result : item);
@@ -44,8 +52,8 @@ public class OnBlockBreak implements Listener {
         Random random = new Random();
         if(random.nextInt(1000) >= 990){
             int tokens = Math.max(10, random.nextInt(50));
-            DataStore.getPlayerData(event.getPlayer()).tokenBalance += tokens;
-            DataStore.getPlayerData(event.getPlayer()).savePlayerData(false);
+            playerData.tokenBalance += tokens;
+            playerData.savePlayerData(false);
             event.getPlayer().sendMessage(ChatColor.YELLOW + "You randomly found " + tokens + " tokens!");
 
         }
@@ -53,7 +61,7 @@ public class OnBlockBreak implements Listener {
             drops.addAll(event.getBlock().getDrops());
         }
         for(ItemStack item : drops) {
-            event.getBlock().getWorld().dropItem(event.getBlock().getLocation().add(0.5, 0.5, 0.5), item);
+            playerData.addItemToBackpack(item);
         }
         event.getBlock().setType(Material.AIR);
 

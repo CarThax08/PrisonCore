@@ -21,19 +21,15 @@ public class PrestigeCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "You must be a player to use this command!");
             return true;
         } else {
-            System.out.println("1");
             Player player = (Player) sender;
             if (player.hasPermission("prestige.canprestige")) {
-                System.out.println("2");
                 ServerPlayer playerData = DataStore.getPlayerData(player);
                 if (playerData != null) {
-                    System.out.println("3");
                     Prestige nextPrestige = PrestigeHandler.getPrestigeByIndex(playerData.pindex + 1);
                     assert nextPrestige != null;
                     if (playerData.getMoney() >= nextPrestige.cost) {
-                        System.out.println("4");
                         if(!playerData.removeMoney(nextPrestige.cost)){
-                            player.sendMessage(ChatColor.RED + "An unknown error has occured when trying to take money away. Prestige did not succeed.");
+                            player.sendMessage(ChatColor.RED + "An unknown error has occurred when trying to take money away. Prestige did not succeed.");
                             return true;
                         }
                         LuckPerms perms = Main.getPerms();
@@ -46,14 +42,12 @@ public class PrestigeCommand implements CommandExecutor {
                         playerData.prestige = nextPrestige;
                         perms.getUserManager().saveUser(user);
                         playerData.savePlayerData(false);
-                        player.sendMessage(ChatColor.GREEN + "Successfully prestige!");
+                        player.sendMessage(ChatColor.GREEN + "Successfully prestiged!");
                     } else {
-                        System.out.println("5");
                         player.sendMessage("You do not have enough money to prestige!");
                     }
                 }
             }else{
-                System.out.println("6");
                 player.sendMessage("You are not the highest rank!");
             }
         }

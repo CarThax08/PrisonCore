@@ -4,9 +4,11 @@ import com.github.carthax08.servercore.Main;
 import com.github.carthax08.servercore.data.ServerPlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class DataFileHandler {
@@ -32,6 +34,15 @@ public class DataFileHandler {
         }
         if(!config.isSet("rank")){
             config.set("rank", 0);
+        }
+        if(!config.isSet("autosell")){
+            config.set("autosell", false);
+        }
+        if(!config.isSet("backpack")){
+            config.set("backpack", new ArrayList<ItemStack>());
+        }
+        if(!config.isSet("backpackSize")){
+            config.set("backpackSize", 50000);
         }
         return config;
     }

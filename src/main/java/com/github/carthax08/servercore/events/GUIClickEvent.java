@@ -23,7 +23,7 @@ public class GUIClickEvent implements Listener {
         if(!(event.getWhoClicked() instanceof Player)){
             return;
         }
-        if(event.getView().getTitle().equalsIgnoreCase("Buy Keys")){
+        if(event.getView().getTitle().equalsIgnoreCase("Token Shop")){
             event.setCancelled(true);
             ItemStack item = event.getInventory().getItem(event.getSlot());
             if(DataStore.cratesGuiCommands.containsKey(item)){
@@ -44,6 +44,7 @@ public class GUIClickEvent implements Listener {
             }
         }
     }
+
     /*
     May implement later.
     private void handleEnchant(CustomEnchantment enchant, Player player) {
