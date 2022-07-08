@@ -2,6 +2,7 @@ package com.github.carthax08.servercore.events;
 
 import com.github.carthax08.servercore.Main;
 import com.github.carthax08.servercore.data.ServerPlayer;
+import com.github.carthax08.servercore.data.files.PricesFileHandler;
 import com.github.carthax08.servercore.util.DataStore;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.util.Location;
@@ -14,13 +15,16 @@ import com.sk89q.worldguard.protection.regions.RegionQuery;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+import org.jetbrains.annotations.Range;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -58,27 +62,29 @@ public class OnBlockBreak implements Listener {
                 drops.add(result != null ? result : item);
             }
         }
-        Random random = new Random();
-        if(random.nextInt(1000) >= 990){
-            int tokens = Math.max(10, random.nextInt(50));
-            playerData.tokenBalance += tokens;
-            playerData.savePlayerData(false);
-            event.getPlayer().sendMessage(ChatColor.YELLOW + "You randomly found " + tokens + " tokens!");
-
+        if(PricesFileHandler.pricesConfig.isSet(event.getBlock().getType().name().toLowerCase())) {
+            Random random = new Random();
+            if (random.nextInt(1, 1000) > 990) {
+                int tokens = random.nextInt(500, 1000);
+                playerData.tokenBalance += tokens;
+                playerData.savePlayerData(false);
+                event.getPlayer().sendMessage(ChatColor.YELLOW + "You randomly found " + tokens + " NovaCoins!");
+            }
         }
         for(ItemStack item : drops) {
-            System.out.println("Adding item " + item + " to backpack");
+            item.setAmount(item.getAmount() * (event.getPlayer().getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS) + 1));
             playerData.addItemToBackpack(item);
         }
         event.setCancelled(true);
         event.getBlock().setType(Material.AIR);
 
+        NumberFormat format = NumberFormat.getNumberInstance();
         event.getPlayer().spigot().sendMessage(
                 ChatMessageType.ACTION_BAR,
                 new TextComponent(
                         ChatColor.translateAlternateColorCodes('&', Main.backpackBarFormat
-                            .replace("%amount%", String.valueOf(playerData.getItemsInBackpack()))
-                            .replace("%max%", String.valueOf(playerData.backpackSize))
+                                .replace("%amount%", format.format(playerData.getItemsInBackpack()))
+                                .replace("%max%", format.format(playerData.backpackSize))
                         )
                 )
         );

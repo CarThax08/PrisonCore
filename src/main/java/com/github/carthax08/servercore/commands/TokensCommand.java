@@ -18,13 +18,13 @@ public class TokensCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(args.length == 0 && sender instanceof Player){
-            sender.sendMessage(ChatColor.GREEN + "Tokens: " + DataStore.getPlayerData((Player) sender).tokenBalance);
+            sender.sendMessage(ChatColor.GREEN + "NovaCoins: " + DataStore.getPlayerData((Player) sender).tokenBalance);
             return true;
         }
-        if(!sender.hasPermission("tokens.edit")){return true;}
-        if(args.length < 3){
-            sender.sendMessage(ChatColor.RED + command.getUsage());
-        }else{
+        if(!sender.hasPermission("novacoins.edit")){return true;}
+        if(args.length == 2 && args[0].equalsIgnoreCase("clear")){
+            handleClear(args, sender);
+        }else if(args.length == 3){
             switch (args[0].toLowerCase()){
                 case "set":
                     handleSet(args, sender);
@@ -35,9 +35,9 @@ public class TokensCommand implements CommandExecutor, TabCompleter {
                 case "remove":
                     handleRemove(args, sender);
                     break;
-                case "clear":
-                    handleClear(args, sender);
             }
+        }else{
+            sender.sendMessage(ChatColor.RED + command.getUsage());
         }
         return true;
     }
@@ -47,7 +47,7 @@ public class TokensCommand implements CommandExecutor, TabCompleter {
         if(player != null) {
             DataStore.getPlayerData(player).tokenBalance = Double.parseDouble(args[2]);
             DataStore.getPlayerData(player).savePlayerData(false);
-            sender.sendMessage(ChatColor.GREEN + "Successfully set " + player.getDisplayName() + "'s balance to " + args[2]);
+            sender.sendMessage(ChatColor.GREEN + "Successfully set " + player.getDisplayName() + "'s balance to " + ChatColor.GREEN + args[2] + " NovaCoins");
         }else{
             sender.sendMessage(ChatColor.RED + "That player does not exist!");
         }
@@ -58,7 +58,7 @@ public class TokensCommand implements CommandExecutor, TabCompleter {
             double amount = Double.parseDouble(args[2]);
             DataStore.getPlayerData(player).tokenBalance += amount;
             DataStore.getPlayerData(player).savePlayerData(false);
-            sender.sendMessage(ChatColor.GREEN + "Successfully added " + args[2] + " tokens to " + player.getDisplayName() + "'s balance");
+            sender.sendMessage(ChatColor.GREEN + "Successfully added " + args[2] + " NovaCoins to " + player.getDisplayName() + ChatColor.GREEN + "'s balance");
         }else{
             sender.sendMessage(ChatColor.RED + "That player does not exist!");
         }
@@ -69,7 +69,7 @@ public class TokensCommand implements CommandExecutor, TabCompleter {
             double amount = Double.parseDouble(args[2]);
             DataStore.getPlayerData(player).tokenBalance -= amount;
             DataStore.getPlayerData(player).savePlayerData(false);
-            sender.sendMessage(ChatColor.GREEN + "Successfully removed " + args[2] + " tokens from " + player.getDisplayName() + "'s balance");
+            sender.sendMessage(ChatColor.GREEN + "Successfully removed " + args[2] + " NovaCoins from " + player.getDisplayName() + ChatColor.GREEN + "'s balance");
         }else{
             sender.sendMessage(ChatColor.RED + "That player does not exist!");
         }
@@ -78,7 +78,7 @@ public class TokensCommand implements CommandExecutor, TabCompleter {
         Player player = Bukkit.getPlayer(args[1]);
         if(player != null) {
             DataStore.getPlayerData(player).tokenBalance = 0;
-            sender.sendMessage(ChatColor.GREEN + "Successfully cleared " + player.getDisplayName() + "'s balance");
+            sender.sendMessage(ChatColor.GREEN + "Successfully cleared " + player.getDisplayName() + ChatColor.GREEN + "'s balance");
             DataStore.getPlayerData(player).savePlayerData(false);
         }else{
             sender.sendMessage(ChatColor.RED + "That player does not exist!");

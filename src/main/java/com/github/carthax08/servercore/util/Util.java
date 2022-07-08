@@ -1,12 +1,10 @@
 package com.github.carthax08.servercore.util;
 
-import com.github.carthax08.servercore.CustomEnchantment;
 import com.github.carthax08.servercore.data.ServerPlayer;
 import com.github.carthax08.servercore.data.files.CratesFileHandler;
 import com.github.carthax08.servercore.data.files.DataFileHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,62 +22,8 @@ public class Util {
     public static ServerPlayer loadPlayerData(Player player) throws IOException {
         return PlayerDataHandler.loadPlayerData(DataFileHandler.loadOrCreatePlayerFile(player), player);
     }
-    /* SCRAPPED, MIGHT ADD IN AN UPDATE
-    public static void openEnchantGui(Player player){
-        Inventory inventory = Bukkit.createInventory(null, InventoryType.CHEST, "Enchants");
-        ItemMeta heldItemMeta = player.getInventory().getItemInMainHand().getItemMeta();
-        for (int i = 0; i < inventory.getSize(); i++){
-            ItemStack item = new ItemStack(Material.STAINED_GLASS_PANE, 1, DyeColor.GRAY.getDyeData());
-            inventory.setItem(i, item);
-        }
-        for(CustomEnchantment enchant : CustomEnchantment.values()){
-            ItemStack item = new ItemStack(enchant.displayMaterial);
-            ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(enchant.displayName.toUpperCase());
-            switch (enchant) {
-                case GREED:
-                    List<String> greedLore = new ArrayList<>();
-                    String greedEnchant;
-                    int greedLevel = 0;
 
-                    for (String string : heldItemMeta.hasLore() ? heldItemMeta.getLore() : new ArrayList<String>()) {
-                        if (!string.contains(enchant.displayName))
-                            continue;
-                        greedEnchant = string;
-                        greedLevel = Integer.parseInt(greedEnchant.substring(greedEnchant.indexOf(' ')).replace(" ", "").replace("Greed", ""));
-                    }
-
-                    greedLore.add("Levels: " + greedLevel + "/ 10");
-                    greedLore.add("Cost: " + (enchant.price + (greedLevel * enchant.price / 5)));
-
-                    meta.setLore(greedLore);
-                    item.setItemMeta(meta);
-                    break;
-                case EXPLOSIVE:
-                    List<String> lore = new ArrayList<>();
-                    String explosiveEnchant;
-                    int explosiveLevel = 0;
-
-                    for (String string : heldItemMeta.hasLore() ? heldItemMeta.getLore() : new ArrayList<String>()) {
-                        if (!string.contains(enchant.displayName)) continue;
-                        explosiveEnchant = string;
-                        explosiveLevel = Integer.parseInt(explosiveEnchant.substring(explosiveEnchant.indexOf(' ')).replace(" ", ""));
-                    }
-
-                    lore.add("Levels: " + explosiveLevel + "/ 5");
-                    lore.add("Cost: " + (enchant.price + (explosiveLevel * enchant.price / 5)));
-
-                    meta.setLore(lore);
-                    item.setItemMeta(meta);
-                    break;
-            }
-            inventory.setItem(enchant.slot, item);
-        }
-        player.openInventory(inventory);
-    }
-    */
-
-    public static void openCratesGui(Player sender) {
+    public static void openTokenShop(Player sender) {
         YamlConfiguration cratesUi = CratesFileHandler.cratesConfig;
 
         if(cratesUi == null){
@@ -87,7 +31,7 @@ public class Util {
             return;
         }
 
-        Inventory inventory = Bukkit.createInventory(null, InventoryType.CHEST, "Token Shop");
+        Inventory inventory = Bukkit.createInventory(null, InventoryType.CHEST, "NovaCoin Shop");
         ConfigurationSection items = cratesUi.getConfigurationSection("gui.slots");
         for(String string : items.getKeys(false)){
             Bukkit.getConsoleSender().sendMessage(string);
@@ -107,19 +51,51 @@ public class Util {
 
     public static String format(double value) {
         if(value >= 1000000000000d){
-            value /= 1000000000000d;
-            return value + "T";
+            value = value / 1000000000000d;
+            String returnValue = value + "T";
+            if(returnValue.contains(".")){
+                returnValue = returnValue.substring(0, returnValue.indexOf('.')+2) + "T";
+            }
+            if(returnValue.contains(".0")){
+                returnValue = returnValue.replace(".0", "");
+            }
+            return returnValue;
         } else if(value >= 1000000000d){
-            value /= 1000000000d;
-            return value + "B";
+            value = value / 1000000000d;
+            String returnValue = value + "B";
+            if(returnValue.contains(".")){
+                returnValue = returnValue.substring(0, returnValue.indexOf('.')+2) + "B";
+            }
+            if(returnValue.contains(".0")){
+                returnValue = returnValue.replace(".0", "");
+            }
+            return returnValue;
         } else if(value >= 1000000d){
-            value /= 1000000d;
-            return value + "M";
+            value = value / 1000000d;
+            String returnValue = value + "M";
+            if(returnValue.contains(".")){
+                returnValue = returnValue.substring(0, returnValue.indexOf('.')+2) + "M";
+            }
+            if(returnValue.contains(".0")){
+                returnValue = returnValue.replace(".0", "");
+            }
+            return returnValue;
         } else if(value >= 1000d){
-            value /= 1000d;
-            return value + "K";
+            value = value / 1000d;
+            String returnValue = value + "K";
+            if(returnValue.contains(".")){
+                returnValue = returnValue.substring(0, returnValue.indexOf('.')+2) + "K";
+            }
+            if(returnValue.contains(".0")){
+                returnValue = returnValue.replace(".0", "");
+            }
+            return returnValue;
         } else{
             return String.valueOf(value);
         }
+    }
+
+    public static void openEnchantGui() {
+        //TODO: Custom Enchants T-T
     }
 }

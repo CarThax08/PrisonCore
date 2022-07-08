@@ -23,18 +23,19 @@ public class GUIClickEvent implements Listener {
         if(!(event.getWhoClicked() instanceof Player)){
             return;
         }
-        if(event.getView().getTitle().equalsIgnoreCase("Token Shop")){
+        if(event.getView().getTitle().equalsIgnoreCase("NovaCoin Shop")){
             event.setCancelled(true);
             ItemStack item = event.getInventory().getItem(event.getSlot());
             if(DataStore.cratesGuiCommands.containsKey(item)){
                 ServerPlayer player = DataStore.getPlayerData((Player) event.getWhoClicked());
+                player.player.sendMessage("Purchasing...");
                 for(String string : item.getItemMeta().getLore()){
                     if(!string.contains("Cost:")){
                         continue;
                     }
                     int cost = Integer.parseInt(string.replace(ChatColor.GOLD + "Cost: ", ""));
                     if(!(player.tokenBalance >= cost)){
-                        event.getWhoClicked().sendMessage(ChatColor.RED + "You do not have enough tokens for that!");
+                        event.getWhoClicked().sendMessage(ChatColor.RED + "You do not have enough NovaCoins for that!");
                         return;
                     }
                     player.tokenBalance -= cost;

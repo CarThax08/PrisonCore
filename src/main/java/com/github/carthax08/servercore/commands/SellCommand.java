@@ -4,6 +4,7 @@ import com.github.carthax08.servercore.Main;
 import com.github.carthax08.servercore.data.ServerPlayer;
 import com.github.carthax08.servercore.data.files.PricesFileHandler;
 import com.github.carthax08.servercore.util.DataStore;
+import com.github.carthax08.servercore.util.Util;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
@@ -15,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -57,13 +59,15 @@ public class SellCommand implements CommandExecutor {
 
         ServerPlayer playerData = DataStore.getPlayerData(player);
 
-        player.sendMessage(ChatColor.GREEN + "Successfully sold " + itemsSold + " items for $" + moneyAdded + ".");
+        //TODO: Make Toggleable.
+        player.sendMessage(ChatColor.GREEN + "Successfully sold " + Util.format(itemsSold) + " items for $" + Util.format(moneyAdded) + ".");
+        NumberFormat format = NumberFormat.getNumberInstance();
         player.spigot().sendMessage(
                 ChatMessageType.ACTION_BAR,
                 new TextComponent(
                         ChatColor.translateAlternateColorCodes('&', Main.backpackBarFormat
-                                .replace("%amount%", String.valueOf(playerData.getItemsInBackpack()))
-                                .replace("%max%", String.valueOf(playerData.backpackSize))
+                                .replace("%amount%", format.format(playerData.getItemsInBackpack()))
+                                .replace("%max%", format.format(playerData.backpackSize))
                         )
                 )
         );

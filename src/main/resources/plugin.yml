@@ -6,20 +6,23 @@ api-version: 1.18
 depend: [Vault, LuckPerms]
 softdepend: [PlaceholderAPI]
 commands:
-  tokens:
-    description: Token command
-    usage: /tokens [add, set, remove, clear] [player] [amount]
+  coins:
+    description: See how many NovaCoins you have
+    usage: /tokens
   prestige:
     description: Prestige to restart with a money boost!
     usage: /prestige
   autosmelt:
-    description: Toggle Autosmelt
+    description: Toggle AutoSmelt
+  autosell:
+    description: Toggle AutoSell
+    usage: /autosell
   enchants:
     description: Enchants command
-  tokenshop:
+  coinshop:
     description: Buy items with tokens!
-    usage: /crates
-    aliases: [ts, tshop]
+    usage: /coinshop
+    aliases: [cs, cshop]
   sellall:
     description: Sell all your items!
     usage: /sellall

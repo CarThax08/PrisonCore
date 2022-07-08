@@ -1,6 +1,10 @@
 package com.github.carthax08.servercore.commands;
 
+import com.github.carthax08.servercore.Main;
+import com.github.carthax08.servercore.data.ServerPlayer;
 import com.github.carthax08.servercore.util.DataStore;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -22,17 +26,27 @@ public class BackpackSizeCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.RED + "Invalid player!");
                     return true;
                 }
+                ServerPlayer playerData = DataStore.getPlayerData(player);
                 switch (args[1]){
                     case "add":
-                        DataStore.getPlayerData(player).backpackSize += Integer.parseInt(args[2]);
+                        playerData.backpackSize += Integer.parseInt(args[2]);
                         break;
                     case "set":
-                        DataStore.getPlayerData(player).backpackSize = Integer.parseInt(args[2]);
+                        playerData.backpackSize = Integer.parseInt(args[2]);
                         break;
                     case "remove":
-                        DataStore.getPlayerData(player).backpackSize -= Integer.parseInt(args[2]);
+                        playerData.backpackSize -= Integer.parseInt(args[2]);
                         break;
                 }
+                player.spigot().sendMessage(
+                        ChatMessageType.ACTION_BAR,
+                        new TextComponent(
+                                ChatColor.translateAlternateColorCodes('&', Main.backpackBarFormat
+                                        .replace("%amount%", String.valueOf(playerData.getItemsInBackpack()))
+                                        .replace("%max%", String.valueOf(playerData.backpackSize))
+                                )
+                        )
+                );
             }
         }
         return true;

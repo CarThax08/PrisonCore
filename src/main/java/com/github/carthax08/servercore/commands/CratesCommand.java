@@ -10,7 +10,7 @@ public class CratesCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player){
-            Util.openCratesGui((Player) sender);
+            Util.openTokenShop((Player) sender);
         }
         return true;
     }
