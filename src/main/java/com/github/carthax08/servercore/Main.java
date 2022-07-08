@@ -3,6 +3,7 @@ package com.github.carthax08.servercore;
 import com.github.carthax08.servercore.commands.*;
 import com.github.carthax08.servercore.data.ServerPlayer;
 import com.github.carthax08.servercore.data.files.CratesFileHandler;
+import com.github.carthax08.servercore.data.files.DataFileHandler;
 import com.github.carthax08.servercore.data.files.PricesFileHandler;
 import com.github.carthax08.servercore.data.files.RanksFileHandler;
 import com.github.carthax08.servercore.events.GUIClickEvent;
@@ -13,6 +14,7 @@ import com.github.carthax08.servercore.placeholders.PluginPlaceholderExpansion;
 import com.github.carthax08.servercore.prestige.PrestigeHandler;
 import com.github.carthax08.servercore.rankup.RankHandler;
 import com.github.carthax08.servercore.util.DataStore;
+import com.github.carthax08.servercore.util.PlayerDataHandler;
 import com.github.carthax08.servercore.util.Util;
 import net.luckperms.api.LuckPerms;
 import net.md_5.bungee.api.ChatMessageType;
@@ -49,6 +51,15 @@ public final class Main extends JavaPlugin {
         registerConfigurations();
         DataStore.lastRankGroup = getConfigFile().getString("settings.lastRankGroupName");
         backpackBarFormat = getConfigFile().getString("settings.backpackBarFormat");
+        for (Player player : Bukkit.getOnlinePlayers()){
+            if(!DataStore.playerData.containsKey(player)){
+                try {
+                    DataStore.playerData.put(player, PlayerDataHandler.loadPlayerData(DataFileHandler.loadOrCreatePlayerFile(player), player));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
     }
 
     @Override
@@ -84,13 +95,12 @@ public final class Main extends JavaPlugin {
             throw new RuntimeException(e);
         }
         new BukkitRunnable() {
-
             @Override
             public void run() {
                 // What you want to schedule goes here
+                NumberFormat format = NumberFormat.getNumberInstance();
                 for (Player player : Bukkit.getOnlinePlayers()){
                     ServerPlayer playerData = DataStore.getPlayerData(player);
-                    NumberFormat format = NumberFormat.getNumberInstance();
                     player.spigot().sendMessage(
                             ChatMessageType.ACTION_BAR,
                             new TextComponent(
@@ -103,7 +113,7 @@ public final class Main extends JavaPlugin {
                 }
             }
 
-        }.runTaskTimer(this, 20, 20);
+        }.runTaskTimer(this, 0, 40);
         backpackBarFormat = getConfig().getString("settings.backpackBarFormat");
         config = getConfig();
     }
@@ -129,15 +139,16 @@ public final class Main extends JavaPlugin {
 
     private void registerCommands() {
         getCommand("autosmelt").setExecutor(new AutoSmeltCommand());
+        getCommand("autosell").setExecutor(new AutoSellCommand());
         getCommand("prestige").setExecutor(new PrestigeCommand());
-        getCommand("tokens").setExecutor(new TokensCommand());
-        getCommand("tokenshop").setExecutor(new CratesCommand());
+        getCommand("novacoins").setExecutor(new TokensCommand());
+        getCommand("coinshop").setExecutor(new CratesCommand());
         getCommand("sellall").setExecutor(new SellCommand());
         getCommand("vote").setExecutor(new VoteCommand());
         getCommand("rankup").setExecutor(new RankupCommand());
         getCommand("backpacksize").setExecutor(new BackpackSizeCommand());
         getCommand("prisoncorereload").setExecutor(new ReloadCommand());
-        //getCommand("enchants").setExecutor(new EnchantsCommand());
+        getCommand("enchants").setExecutor(new EnchantsCommand());
 
     }
 

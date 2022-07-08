@@ -32,11 +32,12 @@ public class ServerPlayer {
 
     public ArrayList<ItemStack> backpack;
     public int backpackSize;
+    public boolean upgradeDebounce;
 
-    public ServerPlayer(Player _player, Double _tokenBalance, int _prestigeIndex, boolean _autosmelt, boolean _autosell, YamlConfiguration _config, double _sellMultiplier, Rank _rank, ArrayList<ItemStack> _backpack, int _backpackSize){
+    public ServerPlayer(Player _player, Double _tokenBalance, int _prestigeIndex, boolean _autosmelt, boolean _autosell, YamlConfiguration _config, double _sellMultiplier, Rank _rank, ArrayList<ItemStack> _backpack, int _backpackSize) {
         player = _player;
         tokenBalance = _tokenBalance;
-        if(!PrestigeHandler.prestiges.isEmpty()) {
+        if (!PrestigeHandler.prestiges.isEmpty()) {
             prestige = PrestigeHandler.getPrestigeByIndex(_prestigeIndex);
         }
         config = _config;
@@ -47,18 +48,21 @@ public class ServerPlayer {
         autosmelt = _autosell;
         backpack = _backpack;
         backpackSize = _backpackSize;
+        upgradeDebounce = false;
     }
 
-    public void savePlayerData(Boolean toFile){
+    public void savePlayerData(Boolean toFile) {
         config.set("tokens", tokenBalance);
-        if(prestige != null) {
+        if (prestige != null) {
             config.set("prestige", pindex);
         }
         config.set("autosmelt", autosmelt);
         config.set("autosell", autosell);
         config.set("multiplier", sellMultiplier);
         config.set("rank", RankHandler.getIndex(rank));
-        if(toFile){
+        config.set("backpack", backpack);
+        config.set("backpackSize", backpackSize);
+        if (toFile) {
             try {
                 DataFileHandler.savePlayerDataToFile(this);
             } catch (IOException e) {
@@ -70,7 +74,8 @@ public class ServerPlayer {
     public double getMoney() {
         return Main.getEcon().getBalance(player);
     }
-    public boolean removeMoney(double amount){
+
+    public boolean removeMoney(double amount) {
         return Main.getEcon().withdrawPlayer(player, amount).type == EconomyResponse.ResponseType.SUCCESS;
     }
 
@@ -78,9 +83,9 @@ public class ServerPlayer {
         return Main.getEcon().depositPlayer(player, amount).type == EconomyResponse.ResponseType.SUCCESS;
     }
 
-    public int getItemsInBackpack(){
+    public int getItemsInBackpack() {
         int items = 0;
-        for (ItemStack bpItem : backpack){
+        for (ItemStack bpItem : backpack) {
             items += bpItem.getAmount();
         }
         return items;
@@ -88,19 +93,33 @@ public class ServerPlayer {
 
     public void addItemToBackpack(ItemStack item) {
         int items = getItemsInBackpack();
-        if(!PricesFileHandler.pricesConfig.isSet(item.getType().name().toLowerCase())){
+        if (!PricesFileHandler.pricesConfig.isSet(item.getType().name().toLowerCase())) {
             player.getInventory().addItem(item);
             return;
         }
-        if(items + item.getAmount() <= backpackSize){
-            backpack.add(item);
-        }else if(items < backpackSize){
-            item.setAmount(backpackSize - items);
-            backpack.add(item);
-            if(autosell) {
-                SellCommand.sellItems(backpack, player);
-                backpack.clear();
+        if (items + item.getAmount() < backpackSize) {
+            for (ItemStack item2 : backpack) {
+                if (item2.getType() == item.getType()) {
+                    item2.setAmount(item2.getAmount() + item.getAmount());
+                    return;
+                }
             }
+            backpack.add(item);
+            return;
+        } else if (items + item.getAmount() == backpackSize) {
+            for (ItemStack item2 : backpack) {
+                if (item2.getType() == item.getType()) {
+                    item2.setAmount(item2.getAmount() + item.getAmount());
+                    return;
+                }
+            }
+            backpack.add(item);
+            return;
+        }else if(items <= backpackSize){
+            int amountToAdd = backpackSize - items;
+            item.setAmount(amountToAdd);
+            backpack.add(item);
+            return;
         }
     }
 }

@@ -11,7 +11,7 @@ public class OnPlayerInteract implements Listener {
     public void onPlayerInteract(PlayerInteractEvent e){
         if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK){
             if(e.getPlayer().getInventory().getItemInMainHand().getType().name().toLowerCase().contains("pickaxe")){
-                Util.openEnchantGui();
+                Util.openEnchantGui(e.getPlayer());
             }
         }
     }

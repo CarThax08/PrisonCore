@@ -6,9 +6,10 @@ api-version: 1.18
 depend: [Vault, LuckPerms]
 softdepend: [PlaceholderAPI]
 commands:
-  coins:
+  novacoins:
     description: See how many NovaCoins you have
     usage: /tokens
+    aliases: [coins, nc, c, ncoins]
   prestige:
     description: Prestige to restart with a money boost!
     usage: /prestige

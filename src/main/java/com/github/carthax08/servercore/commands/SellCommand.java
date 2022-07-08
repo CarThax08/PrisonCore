@@ -31,7 +31,6 @@ public class SellCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         sellItems(DataStore.getPlayerData(player).backpack, player);
-        DataStore.getPlayerData(player).backpack.clear();
         return true;
     }
 
@@ -42,12 +41,12 @@ public class SellCommand implements CommandExecutor {
         YamlConfiguration config = PricesFileHandler.pricesConfig;
         int itemsSold = 0;
         double moneyAdded = 0d;
+        ServerPlayer playerData = DataStore.getPlayerData(player);
         for(int i = 0; i < items.size(); i++){
             ItemStack item = items.get(i);
             if(item == null){
                 continue;
             }
-            ServerPlayer playerData = DataStore.getPlayerData(player);
             if(config.getKeys(false).contains(item.getType().name().toLowerCase())){
                 int amount = item.getAmount();
                 if(playerData.addMoney(config.getDouble(item.getType().toString().toLowerCase()) * amount)){
@@ -57,7 +56,6 @@ public class SellCommand implements CommandExecutor {
             }
         }
 
-        ServerPlayer playerData = DataStore.getPlayerData(player);
 
         //TODO: Make Toggleable.
         player.sendMessage(ChatColor.GREEN + "Successfully sold " + Util.format(itemsSold) + " items for $" + Util.format(moneyAdded) + ".");
@@ -71,5 +69,6 @@ public class SellCommand implements CommandExecutor {
                         )
                 )
         );
+        DataStore.getPlayerData(player).backpack.clear();
     }
 }

@@ -14,6 +14,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.NumberFormat;
+
 public class BackpackSizeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -38,12 +40,13 @@ public class BackpackSizeCommand implements CommandExecutor {
                         playerData.backpackSize -= Integer.parseInt(args[2]);
                         break;
                 }
+                NumberFormat format = NumberFormat.getNumberInstance();
                 player.spigot().sendMessage(
                         ChatMessageType.ACTION_BAR,
                         new TextComponent(
                                 ChatColor.translateAlternateColorCodes('&', Main.backpackBarFormat
-                                        .replace("%amount%", String.valueOf(playerData.getItemsInBackpack()))
-                                        .replace("%max%", String.valueOf(playerData.backpackSize))
+                                        .replace("%amount%", format.format(playerData.getItemsInBackpack()))
+                                        .replace("%max%", format.format(playerData.backpackSize))
                                 )
                         )
                 );

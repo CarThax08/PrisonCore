@@ -1,6 +1,7 @@
 package com.github.carthax08.servercore.events;
 
 import com.github.carthax08.servercore.Main;
+import com.github.carthax08.servercore.commands.SellCommand;
 import com.github.carthax08.servercore.data.ServerPlayer;
 import com.github.carthax08.servercore.data.files.PricesFileHandler;
 import com.github.carthax08.servercore.util.DataStore;
@@ -37,9 +38,11 @@ public class OnBlockBreak implements Listener {
         if(event.getPlayer().getGameMode() == GameMode.CREATIVE) return;
         ServerPlayer playerData = DataStore.getPlayerData(event.getPlayer());
         if(playerData.getItemsInBackpack() >= playerData.backpackSize){
-            event.setCancelled(true);
-            event.getPlayer().sendMessage(ChatColor.RED + "Your backpack is full! Use /sellall to sell!");
-            return;
+            if(!playerData.autosell) {
+                event.getPlayer().sendMessage(ChatColor.RED + "Your backpack is full! Use /sellall to sell!");
+            }else{
+                SellCommand.sellItems(playerData.backpack, playerData.player);
+            }
         }
         playerData.blocksBroken++;
         LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(event.getPlayer());
@@ -49,18 +52,9 @@ public class OnBlockBreak implements Listener {
 
         query.testState(loc, localPlayer, Flags.BUILD);
 
-        if (!query.testState(loc, localPlayer, Flags.BUILD)) {
+        if (!query.testState(loc, localPlayer, Flags.BLOCK_BREAK)) {
             event.setCancelled(true);
             return;
-        }
-        List<ItemStack> drops = new ArrayList<>();
-        if(!playerData.autosmelt){
-            drops.addAll(event.getBlock().getDrops());
-        }else{
-            for (ItemStack item : event.getBlock().getDrops()) {
-                ItemStack result = attemptSmelt(item);
-                drops.add(result != null ? result : item);
-            }
         }
         if(PricesFileHandler.pricesConfig.isSet(event.getBlock().getType().name().toLowerCase())) {
             Random random = new Random();
@@ -71,6 +65,7 @@ public class OnBlockBreak implements Listener {
                 event.getPlayer().sendMessage(ChatColor.YELLOW + "You randomly found " + tokens + " NovaCoins!");
             }
         }
+        List<ItemStack> drops = new ArrayList<>(event.getBlock().getDrops());
         for(ItemStack item : drops) {
             item.setAmount(item.getAmount() * (event.getPlayer().getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS) + 1));
             playerData.addItemToBackpack(item);

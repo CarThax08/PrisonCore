@@ -57,6 +57,7 @@ public class PluginPlaceholderExpansion extends PlaceholderExpansion {
             return String.valueOf(DataStore.getPlayerData(player.getPlayer()).sellMultiplier);
         }
         if(params.equalsIgnoreCase("autosell")){
+            if(!player.getPlayer().hasPermission("autosell.toggle")) return ChatColor.RED + "Unavailable";
             return DataStore.getPlayerData(player.getPlayer()).autosell ? ChatColor.GREEN + "On" : ChatColor.RED + "Off";
         }
         if(params.equalsIgnoreCase("blocks_broken")){
