@@ -1,6 +1,5 @@
 package com.github.carthax08.servercore.util;
 
-import com.github.carthax08.servercore.CustomEnchantment;
 import com.github.carthax08.servercore.data.ServerPlayer;
 import com.github.carthax08.servercore.data.files.CratesFileHandler;
 import com.github.carthax08.servercore.data.files.DataFileHandler;
@@ -95,42 +94,5 @@ public class Util {
         } else{
             return String.valueOf(value);
         }
-    }
-
-    public static void openEnchantGui(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 27, "Enchants");
-        //TODO: Custom Enchants T-T
-        for(CustomEnchantment enchant : CustomEnchantment.values()){
-            ItemStack item = new ItemStack(enchant.displayMaterial);
-            ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', enchant.displayName));
-            List<String> lore = new ArrayList<>();
-            lore.add(ChatColor.translateAlternateColorCodes('&', enchant.description));
-            ItemMeta mainHandMeta = player.getInventory().getItemInMainHand().getItemMeta();
-            String currentLevel = "";
-            if(!mainHandMeta.hasLore()){
-                currentLevel = "0";
-            }else if(enchant == CustomEnchantment.FORTUNE){
-                currentLevel = String.valueOf(mainHandMeta.getEnchantLevel(Enchantment.LOOT_BONUS_BLOCKS));
-            }else {
-                for (String string : mainHandMeta.getLore()) {
-                    if(string.contains(enchant.name())){
-                        string = string.replace(enchant.name() + ": ", "");
-                        currentLevel = string;
-                        break;
-                    }
-                }
-                if(currentLevel.equals("")){
-                    currentLevel = "0";
-                }
-            }
-            lore.add(ChatColor.GREEN + "Level: " + currentLevel + "/" + enchant.maxLevel);
-            lore.add(ChatColor.GREEN + "Cost: " + ChatColor.GOLD + enchant.price);
-            meta.setLore(lore);
-            item.setItemMeta(meta);
-            inventory.setItem(enchant.slot, item);
-
-        }
-        player.openInventory(inventory);
     }
 }

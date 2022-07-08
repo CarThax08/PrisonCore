@@ -2,10 +2,7 @@ package com.github.carthax08.servercore;
 
 import com.github.carthax08.servercore.commands.*;
 import com.github.carthax08.servercore.data.ServerPlayer;
-import com.github.carthax08.servercore.data.files.CratesFileHandler;
-import com.github.carthax08.servercore.data.files.DataFileHandler;
-import com.github.carthax08.servercore.data.files.PricesFileHandler;
-import com.github.carthax08.servercore.data.files.RanksFileHandler;
+import com.github.carthax08.servercore.data.files.*;
 import com.github.carthax08.servercore.events.GUIClickEvent;
 import com.github.carthax08.servercore.events.OnBlockBreak;
 import com.github.carthax08.servercore.events.OnPlayerJoin;
@@ -128,6 +125,7 @@ public final class Main extends JavaPlugin {
         CratesFileHandler.loadOrCreate();
         PricesFileHandler.loadOrCreate();
         RanksFileHandler.loadOrCreate();
+        BlocksFileHandler.loadOrCreate();
     }
 
     private void registerEvents() {
@@ -148,8 +146,6 @@ public final class Main extends JavaPlugin {
         getCommand("rankup").setExecutor(new RankupCommand());
         getCommand("backpacksize").setExecutor(new BackpackSizeCommand());
         getCommand("prisoncorereload").setExecutor(new ReloadCommand());
-        getCommand("enchants").setExecutor(new EnchantsCommand());
-
     }
 
     @Override

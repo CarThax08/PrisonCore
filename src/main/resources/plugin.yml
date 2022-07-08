@@ -18,8 +18,6 @@ commands:
   autosell:
     description: Toggle AutoSell
     usage: /autosell
-  enchants:
-    description: Enchants command
   coinshop:
     description: Buy items with tokens!
     usage: /coinshop

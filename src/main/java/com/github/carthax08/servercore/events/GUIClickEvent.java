@@ -59,9 +59,6 @@ public class GUIClickEvent implements Listener {
                         player.upgradeDebounce = false;
                     }
                 }.runTaskLaterAsynchronously(Main.getInstance(), 5);
-
-
-
             }
         }
     }

@@ -3,6 +3,7 @@ package com.github.carthax08.servercore.events;
 import com.github.carthax08.servercore.Main;
 import com.github.carthax08.servercore.commands.SellCommand;
 import com.github.carthax08.servercore.data.ServerPlayer;
+import com.github.carthax08.servercore.data.files.BlocksFileHandler;
 import com.github.carthax08.servercore.data.files.PricesFileHandler;
 import com.github.carthax08.servercore.util.DataStore;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -56,7 +57,7 @@ public class OnBlockBreak implements Listener {
             event.setCancelled(true);
             return;
         }
-        if(PricesFileHandler.pricesConfig.isSet(event.getBlock().getType().name().toLowerCase())) {
+        if(BlocksFileHandler.blocksConfig.getStringList("blocks").contains(event.getBlock().getType().name().toLowerCase())) {
             Random random = new Random();
             if (random.nextInt(1, 1000) > 990) {
                 int tokens = random.nextInt(500, 1000);

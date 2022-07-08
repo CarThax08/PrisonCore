@@ -10,8 +10,8 @@ public class Players {
         return DataStore.getPlayerData(player);
     }
 
-    public static boolean getAutosmeltStatus(Player player){
-        return DataStore.getPlayerData(player).autosmelt;
+    public static boolean getAutosellStatus(Player player){
+        return DataStore.getPlayerData(player).autosell;
     }
 
     public static double getTokens(Player player){
