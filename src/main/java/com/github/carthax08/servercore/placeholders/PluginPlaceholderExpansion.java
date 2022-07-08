@@ -2,10 +2,13 @@ package com.github.carthax08.servercore.placeholders;
 
 import com.github.carthax08.servercore.Main;
 import com.github.carthax08.servercore.util.DataStore;
+import com.github.carthax08.servercore.util.Util;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
+
+import java.text.NumberFormat;
 
 
 public class PluginPlaceholderExpansion extends PlaceholderExpansion {
@@ -39,7 +42,7 @@ public class PluginPlaceholderExpansion extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, String params) {
         if(params.equalsIgnoreCase("tokens")){
-            return String.valueOf(DataStore.getPlayerData(player.getPlayer()).tokenBalance);
+            return Util.format(DataStore.getPlayerData(player.getPlayer()).tokenBalance);
         }
         if(params.equalsIgnoreCase("autosmelt")){
             return DataStore.getPlayerData(player.getPlayer()).autosmelt ? ChatColor.GREEN + "On" : ChatColor.RED + "Off";

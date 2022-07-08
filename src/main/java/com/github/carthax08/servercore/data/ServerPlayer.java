@@ -3,10 +3,12 @@ package com.github.carthax08.servercore.data;
 import com.github.carthax08.servercore.Main;
 import com.github.carthax08.servercore.commands.SellCommand;
 import com.github.carthax08.servercore.data.files.DataFileHandler;
+import com.github.carthax08.servercore.data.files.PricesFileHandler;
 import com.github.carthax08.servercore.prestige.Prestige;
 import com.github.carthax08.servercore.prestige.PrestigeHandler;
 import com.github.carthax08.servercore.rankup.Rank;
 import com.github.carthax08.servercore.rankup.RankHandler;
+import com.github.carthax08.servercore.util.Util;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -86,6 +88,10 @@ public class ServerPlayer {
 
     public void addItemToBackpack(ItemStack item) {
         int items = getItemsInBackpack();
+        if(!PricesFileHandler.pricesConfig.isSet(item.getType().name().toLowerCase())){
+            player.getInventory().addItem(item);
+            return;
+        }
         if(items + item.getAmount() <= backpackSize){
             backpack.add(item);
         }else if(items < backpackSize){
@@ -93,6 +99,7 @@ public class ServerPlayer {
             backpack.add(item);
             if(autosell) {
                 SellCommand.sellItems(backpack, player);
+                backpack.clear();
             }
         }
     }

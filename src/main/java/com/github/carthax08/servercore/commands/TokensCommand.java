@@ -1,10 +1,8 @@
 package com.github.carthax08.servercore.commands;
 
 import com.github.carthax08.servercore.util.DataStore;
-import com.github.carthax08.servercore.util.PlayerDataHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,42 +27,62 @@ public class TokensCommand implements CommandExecutor, TabCompleter {
         }else{
             switch (args[0].toLowerCase()){
                 case "set":
-                    handleSet(args);
+                    handleSet(args, sender);
                     break;
                 case "add":
-                    handleAdd(args);
+                    handleAdd(args, sender);
                     break;
                 case "remove":
-                    handleRemove(args);
+                    handleRemove(args, sender);
                     break;
                 case "clear":
-                    handleClear(args);
+                    handleClear(args, sender);
             }
         }
         return true;
     }
 
-    private void handleSet(String[] args) {
+    private void handleSet(String[] args, CommandSender sender) {
         Player player = Bukkit.getPlayer(args[1]);
-        DataStore.getPlayerData(player).tokenBalance = Double.parseDouble(args[2]);
-        DataStore.getPlayerData(player).savePlayerData(false);
+        if(player != null) {
+            DataStore.getPlayerData(player).tokenBalance = Double.parseDouble(args[2]);
+            DataStore.getPlayerData(player).savePlayerData(false);
+            sender.sendMessage(ChatColor.GREEN + "Successfully set " + player.getDisplayName() + "'s balance to " + args[2]);
+        }else{
+            sender.sendMessage(ChatColor.RED + "That player does not exist!");
+        }
     }
-    private void handleAdd(String[] args) {
+    private void handleAdd(String[] args, CommandSender sender) {
         Player player = Bukkit.getPlayer(args[1]);
-        double amount = Double.parseDouble(args[2]);
-        DataStore.getPlayerData(player).tokenBalance += amount;
-        DataStore.getPlayerData(player).savePlayerData(false);
+        if(player != null) {
+            double amount = Double.parseDouble(args[2]);
+            DataStore.getPlayerData(player).tokenBalance += amount;
+            DataStore.getPlayerData(player).savePlayerData(false);
+            sender.sendMessage(ChatColor.GREEN + "Successfully added " + args[2] + " tokens to " + player.getDisplayName() + "'s balance");
+        }else{
+            sender.sendMessage(ChatColor.RED + "That player does not exist!");
+        }
     }
-    private void handleRemove(String[] args) {
+    private void handleRemove(String[] args, CommandSender sender) {
         Player player = Bukkit.getPlayer(args[1]);
-        double amount = Double.parseDouble(args[2]);
-        DataStore.getPlayerData(player).tokenBalance -= amount;
-        DataStore.getPlayerData(player).savePlayerData(false);
+        if(player != null) {
+            double amount = Double.parseDouble(args[2]);
+            DataStore.getPlayerData(player).tokenBalance -= amount;
+            DataStore.getPlayerData(player).savePlayerData(false);
+            sender.sendMessage(ChatColor.GREEN + "Successfully removed " + args[2] + " tokens from " + player.getDisplayName() + "'s balance");
+        }else{
+            sender.sendMessage(ChatColor.RED + "That player does not exist!");
+        }
     }
-    private void handleClear(String[] args) {
+    private void handleClear(String[] args, CommandSender sender) {
         Player player = Bukkit.getPlayer(args[1]);
-        DataStore.getPlayerData(player).tokenBalance = 0;
-        DataStore.getPlayerData(player).savePlayerData(false);
+        if(player != null) {
+            DataStore.getPlayerData(player).tokenBalance = 0;
+            sender.sendMessage(ChatColor.GREEN + "Successfully cleared " + player.getDisplayName() + "'s balance");
+            DataStore.getPlayerData(player).savePlayerData(false);
+        }else{
+            sender.sendMessage(ChatColor.RED + "That player does not exist!");
+        }
     }
 
     @Override
@@ -75,6 +93,11 @@ public class TokensCommand implements CommandExecutor, TabCompleter {
             tabComplete.add("set");
             tabComplete.add("remove");
             tabComplete.add("clear");
+        }
+        if(sender.hasPermission("tokens.edit") && args.length == 1){
+            for (Player player : Bukkit.getOnlinePlayers()){
+                tabComplete.add(player.getName());
+            }
         }
         return tabComplete;
     }

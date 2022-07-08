@@ -20,6 +20,7 @@ public class BackpackSizeCommand implements CommandExecutor {
                 Player player = Bukkit.getPlayer(args[0]);
                 if(player == null){
                     sender.sendMessage(ChatColor.RED + "Invalid player!");
+                    return true;
                 }
                 switch (args[1]){
                     case "add":

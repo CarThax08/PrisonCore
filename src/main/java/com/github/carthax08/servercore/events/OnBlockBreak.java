@@ -3,13 +3,14 @@ package com.github.carthax08.servercore.events;
 import com.github.carthax08.servercore.Main;
 import com.github.carthax08.servercore.data.ServerPlayer;
 import com.github.carthax08.servercore.util.DataStore;
-import com.github.carthax08.servercore.util.Util;
-import com.sk89q.worldguard.bukkit.RegionContainer;
-import com.sk89q.worldguard.bukkit.RegionQuery;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.util.Location;
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.flags.Flags;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
+import com.sk89q.worldguard.protection.regions.RegionQuery;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -37,16 +38,21 @@ public class OnBlockBreak implements Listener {
             return;
         }
         playerData.blocksBroken++;
-        RegionContainer manager = WorldGuardPlugin.inst().getRegionContainer();
-        RegionQuery query = manager.createQuery();
-        ApplicableRegionSet set = query.getApplicableRegions(event.getBlock().getLocation());
-        if(set.size() > 0){
-            if (query.queryState(event.getBlock().getLocation(), WorldGuardPlugin.inst().wrapPlayer(event.getPlayer()), DefaultFlag.BLOCK_BREAK).equals(StateFlag.State.DENY)){
-                return;
-            }
+        LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(event.getPlayer());
+        Location loc = BukkitAdapter.adapt(event.getBlock().getLocation());
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionQuery query = container.createQuery();
+
+        query.testState(loc, localPlayer, Flags.BUILD);
+
+        if (!query.testState(loc, localPlayer, Flags.BUILD)) {
+            event.setCancelled(true);
+            return;
         }
         List<ItemStack> drops = new ArrayList<>();
-        if(playerData.autosmelt){
+        if(!playerData.autosmelt){
+            drops.addAll(event.getBlock().getDrops());
+        }else{
             for (ItemStack item : event.getBlock().getDrops()) {
                 ItemStack result = attemptSmelt(item);
                 drops.add(result != null ? result : item);
@@ -60,12 +66,11 @@ public class OnBlockBreak implements Listener {
             event.getPlayer().sendMessage(ChatColor.YELLOW + "You randomly found " + tokens + " tokens!");
 
         }
-        if(drops.isEmpty()){
-            drops.addAll(event.getBlock().getDrops());
-        }
         for(ItemStack item : drops) {
+            System.out.println("Adding item " + item + " to backpack");
             playerData.addItemToBackpack(item);
         }
+        event.setCancelled(true);
         event.getBlock().setType(Material.AIR);
 
         event.getPlayer().spigot().sendMessage(

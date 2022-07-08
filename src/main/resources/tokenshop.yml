@@ -2,7 +2,7 @@
 gui:
   slots:
     # 0 for the top left slot 26 for the bottom right slot. No filler.
-    1:
+    0:
       item: CHEST
       name: Test Crate
       lore:

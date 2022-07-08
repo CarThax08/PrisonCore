@@ -39,6 +39,10 @@ public final class Main extends JavaPlugin {
 
     public static String backpackBarFormat = "";
 
+    public static void reloadPlugin() {
+        registerConfigurations();
+    }
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -94,13 +98,13 @@ public final class Main extends JavaPlugin {
         backpackBarFormat = getConfig().getString("settings.backpackBarFormat");
     }
 
-    private void loadAlreadyOnlinePlayers() throws IOException {
+    private static void loadAlreadyOnlinePlayers() throws IOException {
         for (Player player : Bukkit.getOnlinePlayers()){
             Util.loadPlayerData(player);
         }
     }
 
-    private void registerConfigurations() {
+    private static void registerConfigurations() {
         CratesFileHandler.loadOrCreate();
         PricesFileHandler.loadOrCreate();
         RanksFileHandler.loadOrCreate();
@@ -121,6 +125,8 @@ public final class Main extends JavaPlugin {
         getCommand("sellall").setExecutor(new SellCommand());
         getCommand("vote").setExecutor(new VoteCommand());
         getCommand("rankup").setExecutor(new RankupCommand());
+        getCommand("backpacksize").setExecutor(new BackpackSizeCommand());
+        getCommand("prisoncorereload").setExecutor(new ReloadCommand());
         //getCommand("enchants").setExecutor(new EnchantsCommand());
 
     }
@@ -129,7 +135,6 @@ public final class Main extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         for(Player player : Bukkit.getOnlinePlayers()){
-
             DataStore.getPlayerData(player).savePlayerData(true);
             DataStore.playerData.remove(player);
         }

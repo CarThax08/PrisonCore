@@ -87,7 +87,7 @@ public class Util {
             return;
         }
 
-        Inventory inventory = Bukkit.createInventory(null, InventoryType.CHEST, "Buy Keys");
+        Inventory inventory = Bukkit.createInventory(null, InventoryType.CHEST, "Token Shop");
         ConfigurationSection items = cratesUi.getConfigurationSection("gui.slots");
         for(String string : items.getKeys(false)){
             Bukkit.getConsoleSender().sendMessage(string);
@@ -103,5 +103,23 @@ public class Util {
             DataStore.cratesGuiCommands.put(item, items.getString(string + ".command").replace("%player%", sender.getName()));
         }
         sender.openInventory(inventory);
+    }
+
+    public static String format(double value) {
+        if(value >= 1000000000000d){
+            value /= 1000000000000d;
+            return value + "T";
+        } else if(value >= 1000000000d){
+            value /= 1000000000d;
+            return value + "B";
+        } else if(value >= 1000000d){
+            value /= 1000000d;
+            return value + "M";
+        } else if(value >= 1000d){
+            value /= 1000d;
+            return value + "K";
+        } else{
+            return String.valueOf(value);
+        }
     }
 }

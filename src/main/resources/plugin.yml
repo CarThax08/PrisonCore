@@ -33,3 +33,7 @@ commands:
     description: Change a player's backpack size
     usage: /backpacksize [player] [add, set, remove] [amount]
     aliases: [bps, bpsize]
+  prisoncorereload:
+    description: Reloads the config files for PrisonCore
+    usage: /prisoncorereload
+    aliases: [pcr, pcreload]

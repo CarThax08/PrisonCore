@@ -1,7 +1,11 @@
 package com.github.carthax08.servercore.commands;
 
+import com.github.carthax08.servercore.Main;
+import com.github.carthax08.servercore.data.ServerPlayer;
 import com.github.carthax08.servercore.data.files.PricesFileHandler;
 import com.github.carthax08.servercore.util.DataStore;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,6 +29,7 @@ public class SellCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         sellItems(DataStore.getPlayerData(player).backpack, player);
+        DataStore.getPlayerData(player).backpack.clear();
         return true;
     }
 
@@ -40,16 +45,27 @@ public class SellCommand implements CommandExecutor {
             if(item == null){
                 continue;
             }
+            ServerPlayer playerData = DataStore.getPlayerData(player);
             if(config.getKeys(false).contains(item.getType().name().toLowerCase())){
                 int amount = item.getAmount();
-                if(DataStore.getPlayerData(player).addMoney(config.getDouble(item.getType().toString().toLowerCase()) * amount)){
+                if(playerData.addMoney(config.getDouble(item.getType().toString().toLowerCase()) * amount)){
                     moneyAdded += config.getDouble(item.getType().toString().toLowerCase()) * amount;
                     itemsSold += amount;
-                    player.getInventory().setItem(i, null);
                 }
             }
         }
 
+        ServerPlayer playerData = DataStore.getPlayerData(player);
+
         player.sendMessage(ChatColor.GREEN + "Successfully sold " + itemsSold + " items for $" + moneyAdded + ".");
+        player.spigot().sendMessage(
+                ChatMessageType.ACTION_BAR,
+                new TextComponent(
+                        ChatColor.translateAlternateColorCodes('&', Main.backpackBarFormat
+                                .replace("%amount%", String.valueOf(playerData.getItemsInBackpack()))
+                                .replace("%max%", String.valueOf(playerData.backpackSize))
+                        )
+                )
+        );
     }
 }
