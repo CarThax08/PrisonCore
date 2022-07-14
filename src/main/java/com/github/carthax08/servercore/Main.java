@@ -136,7 +136,6 @@ public final class Main extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("autosmelt").setExecutor(new AutoSmeltCommand());
         getCommand("autosell").setExecutor(new AutoSellCommand());
         getCommand("prestige").setExecutor(new PrestigeCommand());
         getCommand("novacoins").setExecutor(new TokensCommand());
@@ -146,6 +145,7 @@ public final class Main extends JavaPlugin {
         getCommand("rankup").setExecutor(new RankupCommand());
         getCommand("backpacksize").setExecutor(new BackpackSizeCommand());
         getCommand("prisoncorereload").setExecutor(new ReloadCommand());
+        getCommand("multiplier").setExecutor(new MultiplierCommand());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.github.carthax08.servercore.placeholders;
 
 import com.github.carthax08.servercore.Main;
+import com.github.carthax08.servercore.rankup.Rank;
 import com.github.carthax08.servercore.util.DataStore;
 import com.github.carthax08.servercore.util.Util;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -46,6 +47,14 @@ public class PluginPlaceholderExpansion extends PlaceholderExpansion {
         }
         if(params.equalsIgnoreCase("autosmelt")){
             return DataStore.getPlayerData(player.getPlayer()).autosmelt ? ChatColor.GREEN + "On" : ChatColor.RED + "Off";
+        }
+        if(params.equalsIgnoreCase("rank")){
+            return DataStore.getPlayerData(player.getPlayer()).rank.name;
+        }
+        if(params.equalsIgnoreCase("nextrankcost")){
+            Rank rank = DataStore.getPlayerData(player.getPlayer()).rank;
+            Rank nextRank = DataStore.getPlayerData(player.getPlayer()).getNextRank();
+            return nextRank == null ? Util.format(rank.cost) : Util.format(nextRank.cost);
         }
         if(params.equalsIgnoreCase("prestige")){
             return String.valueOf(DataStore.getPlayerData(player.getPlayer()).pindex);

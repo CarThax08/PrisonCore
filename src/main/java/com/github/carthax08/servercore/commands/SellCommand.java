@@ -42,14 +42,13 @@ public class SellCommand implements CommandExecutor {
         int itemsSold = 0;
         double moneyAdded = 0d;
         ServerPlayer playerData = DataStore.getPlayerData(player);
-        for(int i = 0; i < items.size(); i++){
-            ItemStack item = items.get(i);
-            if(item == null){
+        for (ItemStack item : items) {
+            if (item == null) {
                 continue;
             }
-            if(config.getKeys(false).contains(item.getType().name().toLowerCase())){
+            if (config.getKeys(false).contains(item.getType().name().toLowerCase())) {
                 int amount = item.getAmount();
-                if(playerData.addMoney(config.getDouble(item.getType().toString().toLowerCase()) * amount)){
+                if (playerData.addMoney((config.getDouble(item.getType().toString().toLowerCase()) * amount) * (playerData.sellMultiplier + playerData.tempSellMultiplier))) {
                     moneyAdded += config.getDouble(item.getType().toString().toLowerCase()) * amount;
                     itemsSold += amount;
                 }

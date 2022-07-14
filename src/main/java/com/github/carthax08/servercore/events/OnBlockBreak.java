@@ -51,20 +51,9 @@ public class OnBlockBreak implements Listener {
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
 
-        query.testState(loc, localPlayer, Flags.BUILD);
-
         if (!query.testState(loc, localPlayer, Flags.BLOCK_BREAK)) {
             event.setCancelled(true);
             return;
-        }
-        if(BlocksFileHandler.blocksConfig.getStringList("blocks").contains(event.getBlock().getType().name().toLowerCase())) {
-            Random random = new Random();
-            if (random.nextInt(1, 1000) > 990) {
-                int tokens = random.nextInt(500, 1000);
-                playerData.tokenBalance += tokens;
-                playerData.savePlayerData(false);
-                event.getPlayer().sendMessage(ChatColor.YELLOW + "You randomly found " + tokens + " NovaCoins!");
-            }
         }
         List<ItemStack> drops = new ArrayList<>(event.getBlock().getDrops());
         for(ItemStack item : drops) {

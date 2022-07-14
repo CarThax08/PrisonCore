@@ -13,8 +13,6 @@ commands:
   prestige:
     description: Prestige to restart with a money boost!
     usage: /prestige
-  autosmelt:
-    description: Toggle AutoSmelt
   autosell:
     description: Toggle AutoSell
     usage: /autosell
@@ -39,3 +37,7 @@ commands:
     description: Reloads the config files for PrisonCore
     usage: /prisoncorereload
     aliases: [pcr, pcreload]
+  multiplier:
+    description: Console only
+    usage: /multiplier (player) (amount)
+    aliases: [multi]

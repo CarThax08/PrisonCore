@@ -17,6 +17,9 @@ public class Players {
     public static double getTokens(Player player){
         return DataStore.getPlayerData(player).tokenBalance;
     }
+    public static void setTokens(Player player, double amount){
+        DataStore.getPlayerData(player).tokenBalance = amount;
+    }
 
     public static Prestige getPrestige(Player player){
         return DataStore.getPlayerData(player).prestige;

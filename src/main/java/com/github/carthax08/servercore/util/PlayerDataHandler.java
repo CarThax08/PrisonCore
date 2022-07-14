@@ -10,8 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 
 public class PlayerDataHandler {
-
-
     public static ServerPlayer loadPlayerData(YamlConfiguration config, Player player) {
 
         double tokens = config.getDouble("tokens");
@@ -23,6 +21,6 @@ public class PlayerDataHandler {
         Rank rank = RankHandler.getRank(config.getInt("rank"));
         ArrayList<ItemStack> backpack = (ArrayList<ItemStack>) config.getList("backpack");
 
-        return new ServerPlayer(player, tokens, prestigeIndex, autosmelt, autosell, config, multi, rank, backpack, backpackSize);
+        return new ServerPlayer(player, tokens, prestigeIndex, autosell, config, multi, rank, backpack, backpackSize);
     }
 }

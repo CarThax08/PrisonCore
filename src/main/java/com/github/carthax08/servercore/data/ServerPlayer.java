@@ -26,6 +26,7 @@ public class ServerPlayer {
     public boolean autosmelt;
     public YamlConfiguration config;
     public double sellMultiplier;
+    public double tempSellMultiplier = 0;
     public Rank rank;
     public boolean autosell;
     public int blocksBroken;
@@ -34,7 +35,7 @@ public class ServerPlayer {
     public int backpackSize;
     public boolean upgradeDebounce;
 
-    public ServerPlayer(Player _player, Double _tokenBalance, int _prestigeIndex, boolean _autosmelt, boolean _autosell, YamlConfiguration _config, double _sellMultiplier, Rank _rank, ArrayList<ItemStack> _backpack, int _backpackSize) {
+    public ServerPlayer(Player _player, Double _tokenBalance, int _prestigeIndex, boolean _autosell, YamlConfiguration _config, double _sellMultiplier, Rank _rank, ArrayList<ItemStack> _backpack, int _backpackSize) {
         player = _player;
         tokenBalance = _tokenBalance;
         if (!PrestigeHandler.prestiges.isEmpty()) {
@@ -42,10 +43,9 @@ public class ServerPlayer {
         }
         config = _config;
         pindex = _prestigeIndex;
-        autosmelt = _autosmelt;
+        autosell = _autosell;
         sellMultiplier = _sellMultiplier;
         rank = _rank;
-        autosmelt = _autosell;
         backpack = _backpack;
         backpackSize = _backpackSize;
         upgradeDebounce = false;
@@ -56,7 +56,6 @@ public class ServerPlayer {
         if (prestige != null) {
             config.set("prestige", pindex);
         }
-        config.set("autosmelt", autosmelt);
         config.set("autosell", autosell);
         config.set("multiplier", sellMultiplier);
         config.set("rank", RankHandler.getIndex(rank));
@@ -121,5 +120,9 @@ public class ServerPlayer {
             backpack.add(item);
             return;
         }
+    }
+
+    public Rank getNextRank() {
+        return RankHandler.getNextRank(rank);
     }
 }

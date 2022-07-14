@@ -24,7 +24,7 @@ public class RankHandler {
 
     public static Rank getNextRank(Rank rank){
         if(ranks.size() > ranks.indexOf(rank) + 1){
-            return ranks.get(ranks.indexOf(rank) + 2);
+            return ranks.get(ranks.indexOf(rank) + 1);
         }
         return null;
     }
