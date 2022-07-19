@@ -30,7 +30,7 @@ public class WithdrawCommand implements CommandExecutor {
         if (!(sender instanceof Player)) {sender.sendMessage(ChatColor.RED + "This command must be ran by a player!"); return true;}
         if (args.length != 2) {return false;}
         ServerPlayer playerData = DataStore.getPlayerData((Player) sender);
-        switch (args[0]) {
+        switch (args[0].toLowerCase()) {
             case ("tokens"):
                 int tokenamount;
                 try {
@@ -43,7 +43,7 @@ public class WithdrawCommand implements CommandExecutor {
                 ItemMeta tokenmeta = tokenitem.getItemMeta();
                 tokenmeta.setDisplayName(ChatColor.GREEN + "Token Banknote");
                 if (playerData.tokenBalance < tokenamount) {
-                    sender.sendMessage("You are too broke for this shit");
+                    sender.sendMessage("You are too broke.");
                     return true;
                 } else {
                     playerData.tokenBalance = playerData.tokenBalance - tokenamount;
@@ -70,7 +70,7 @@ public class WithdrawCommand implements CommandExecutor {
                 ItemMeta balancemeta = balanceitem.getItemMeta();
                 balancemeta.setDisplayName(ChatColor.GREEN + "Balance Banknote");
                 if (playerData.tokenBalance < amount) {
-                    sender.sendMessage("You are too broke for this shit");
+                    sender.sendMessage("You are too broke.");
                     return true;
                 } else {
                     playerData.removeMoney(amount);
@@ -86,7 +86,7 @@ public class WithdrawCommand implements CommandExecutor {
                 ((Player) sender).getInventory().addItem(balanceitem);
                 break;
             default:
-                sender.sendMessage("You need to have either balance or token as a first argument!");
+                sender.sendMessage("You need to have either balance or tokens as a first argument!");
         }
         return false;
     }
