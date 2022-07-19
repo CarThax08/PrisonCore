@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -34,19 +35,35 @@ public class ClickEvent implements Listener {
             ServerPlayer player = DataStore.getPlayerData(e.getPlayer());
             switch (storedtype) {
                 case ("balance"):
-                    if (e.getItem().getAmount() > 1) {
-                        e.getItem().setAmount(e.getItem().getAmount() - 1);
+                    if (e.getPlayer().getInventory().getItemInOffHand().equals(e.getItem())) {
+                        if (e.getItem().getAmount() > 1) {
+                            e.getItem().setAmount(e.getItem().getAmount() - 1);
+                        } else {
+                            e.getPlayer().getInventory().setItemInOffHand(null);
+                        }
                     } else {
-                        e.getPlayer().getInventory().remove(e.getItem());
+                        if (e.getItem().getAmount() > 1) {
+                            e.getItem().setAmount(e.getItem().getAmount() - 1);
+                        } else {
+                            e.getPlayer().getInventory().remove(e.getItem());
+                        }
                     }
                     player.addMoney(storedamount);
                     player.savePlayerData(false);
                     break;
                 case ("token"):
-                    if (e.getItem().getAmount() > 1) {
-                        e.getItem().setAmount(e.getItem().getAmount() - 1);
+                    if (e.getPlayer().getInventory().getItemInOffHand().equals(e.getItem())) {
+                        if (e.getItem().getAmount() > 1) {
+                            e.getItem().setAmount(e.getItem().getAmount() - 1);
+                        } else {
+                            e.getPlayer().getInventory().setItemInOffHand(null);
+                        }
                     } else {
-                        e.getPlayer().getInventory().remove(e.getItem());
+                        if (e.getItem().getAmount() > 1) {
+                            e.getItem().setAmount(e.getItem().getAmount() - 1);
+                        } else {
+                            e.getPlayer().getInventory().remove(e.getItem());
+                        }
                     }
                     player.tokenBalance = player.tokenBalance + storedamount;
                     player.savePlayerData(false);
