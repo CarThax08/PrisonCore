@@ -6,6 +6,10 @@ api-version: 1.18
 depend: [Vault, LuckPerms]
 softdepend: [PlaceholderAPI]
 commands:
+  withdraw:
+    description: Withrdraw your balance or tokens
+    usage: /withdraw [balance|tokens] <amount>
+    aliases: [with, banknote, note]
   novacoins:
     description: See how many NovaCoins you have
     usage: /tokens

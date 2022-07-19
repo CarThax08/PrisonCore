@@ -3,10 +3,7 @@ package com.github.carthax08.servercore;
 import com.github.carthax08.servercore.commands.*;
 import com.github.carthax08.servercore.data.ServerPlayer;
 import com.github.carthax08.servercore.data.files.*;
-import com.github.carthax08.servercore.events.GUIClickEvent;
-import com.github.carthax08.servercore.events.OnBlockBreak;
-import com.github.carthax08.servercore.events.OnPlayerJoin;
-import com.github.carthax08.servercore.events.OnPlayerLeave;
+import com.github.carthax08.servercore.events.*;
 import com.github.carthax08.servercore.placeholders.PluginPlaceholderExpansion;
 import com.github.carthax08.servercore.prestige.PrestigeHandler;
 import com.github.carthax08.servercore.rankup.RankHandler;
@@ -133,6 +130,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new OnPlayerLeave(), this);
         getServer().getPluginManager().registerEvents(new GUIClickEvent(), this);
+        getServer().getPluginManager().registerEvents(new ClickEvent(this), this);
     }
 
     private void registerCommands() {
@@ -146,6 +144,7 @@ public final class Main extends JavaPlugin {
         getCommand("backpacksize").setExecutor(new BackpackSizeCommand());
         getCommand("prisoncorereload").setExecutor(new ReloadCommand());
         getCommand("multiplier").setExecutor(new MultiplierCommand());
+        getCommand("withdraw").setExecutor(new WithdrawCommand(this));
     }
 
     @Override
