@@ -29,7 +29,10 @@ public class WithdrawCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (!(sender instanceof Player)) {sender.sendMessage(ChatColor.RED + "This command must be ran by a player!"); return true;}
         if (args.length != 2) {return false;}
-        ServerPlayer playerData = DataStore.getPlayerData((Player) sender);
+        Player player = (Player) sender;
+        ServerPlayer playerData = DataStore.getPlayerData(player);
+        NamespacedKey amountKey = new NamespacedKey(main, "amount");
+        NamespacedKey typeKey = new NamespacedKey(main, "type");
         switch (args[0].toLowerCase()) {
             case ("tokens"):
                 int tokenamount;
@@ -39,24 +42,23 @@ public class WithdrawCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.RED + "You must have a valid number as your second argument!");
                     return true;
                 }
-                ItemStack tokenitem = new ItemStack(Material.PAPER);
-                ItemMeta tokenmeta = tokenitem.getItemMeta();
-                tokenmeta.setDisplayName(ChatColor.GREEN + "Token Banknote");
                 if (playerData.tokenBalance < tokenamount) {
-                    sender.sendMessage("You are too broke.");
+                    sender.sendMessage(ChatColor.RED + "You don't have enough tokens for that!");
                     return true;
                 } else {
                     playerData.tokenBalance = playerData.tokenBalance - tokenamount;
                     playerData.savePlayerData(false);
                 }
-                tokenmeta.setLore(Arrays.asList("Token Amount: " + tokenamount));
-                PersistentDataContainer tokendata = tokenmeta.getPersistentDataContainer();
-                NamespacedKey tokenamountkey = new NamespacedKey(main, "amount");
-                NamespacedKey tokentypekey = new NamespacedKey(main, "type");
-                tokendata.set(tokenamountkey, PersistentDataType.INTEGER, tokenamount);
-                tokendata.set(tokentypekey, PersistentDataType.STRING, "token");
-                tokenitem.setItemMeta(tokenmeta);
-                ((Player) sender).getInventory().addItem(tokenitem);
+                ItemStack tokenItem = new ItemStack(Material.PAPER);
+                ItemMeta tokenMeta = tokenItem.getItemMeta();
+                tokenMeta.setDisplayName(ChatColor.GREEN + "Token Banknote");
+                tokenMeta.setLore(Arrays.asList("Token Amount: " + tokenamount));
+                PersistentDataContainer tokenData = tokenMeta.getPersistentDataContainer();
+                tokenData.set(amountKey, PersistentDataType.INTEGER, tokenamount);
+                tokenData.set(typeKey, PersistentDataType.STRING, "token");
+                tokenItem.setItemMeta(tokenMeta);
+                (player).getInventory().addItem(tokenItem);
+                sender.sendMessage(ChatColor.GREEN + "Success!");
                 break;
             case ("balance"):
                 int amount;
@@ -66,28 +68,27 @@ public class WithdrawCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.RED + "You must have a valid number as your second argument!");
                     return true;
                 }
-                ItemStack balanceitem = new ItemStack(Material.PAPER);
-                ItemMeta balancemeta = balanceitem.getItemMeta();
-                balancemeta.setDisplayName(ChatColor.GREEN + "Balance Banknote");
                 if (playerData.tokenBalance < amount) {
-                    sender.sendMessage("You are too broke.");
+                    sender.sendMessage(ChatColor.RED + "You don't have enough money for that!");
                     return true;
                 } else {
                     playerData.removeMoney(amount);
                     playerData.savePlayerData(false);
                 }
-                balancemeta.setLore(Arrays.asList("Balance Amount: " + amount));
-                PersistentDataContainer balancedata = balancemeta.getPersistentDataContainer();
-                NamespacedKey balanceamountkey = new NamespacedKey(main, "amount");
-                NamespacedKey balancetypekey = new NamespacedKey(main, "type");
-                balancedata.set(balanceamountkey, PersistentDataType.INTEGER, amount);
-                balancedata.set(balancetypekey, PersistentDataType.STRING, "balance");
-                balanceitem.setItemMeta(balancemeta);
-                ((Player) sender).getInventory().addItem(balanceitem);
+                ItemStack balanceItem = new ItemStack(Material.PAPER);
+                ItemMeta balanceMeta = balanceItem.getItemMeta();
+                balanceMeta.setDisplayName(ChatColor.GREEN + "Balance Banknote");
+                balanceMeta.setLore(Arrays.asList("Balance Amount: " + amount));
+                PersistentDataContainer balanceData = balanceMeta.getPersistentDataContainer();
+                balanceData.set(amountKey, PersistentDataType.INTEGER, amount);
+                balanceData.set(typeKey, PersistentDataType.STRING, "balance");
+                balanceItem.setItemMeta(balanceMeta);
+                player.getInventory().addItem(balanceItem);
+                sender.sendMessage(ChatColor.GREEN + "Success!");
                 break;
             default:
-                sender.sendMessage("You need to have either balance or tokens as a first argument!");
+                sender.sendMessage(ChatColor.RED + "You need to have either balance or tokens as a first argument!");
         }
-        return false;
+        return true;
     }
 }

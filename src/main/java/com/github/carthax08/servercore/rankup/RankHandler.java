@@ -12,7 +12,7 @@ public class RankHandler {
     private static ArrayList<Rank> ranks = new ArrayList<>();
 
     public static void deserialize(ConfigurationSection config, int index){
-        ranks.add(index, new Rank(config.getString("name"), config.getDouble("cost"), config.getString("groupName"), config.getString("prefix")));
+        ranks.add(index, new Rank(config.getString("name"), config.getDouble("cost"), config.getString("groupName"), config.getString("prefix"), config.getStringList("permissions")));
     }
 
     public static Rank getRank(int index){

@@ -9,8 +9,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.NumberFormat;
-
 
 public class PluginPlaceholderExpansion extends PlaceholderExpansion {
     @NotNull
@@ -45,9 +43,6 @@ public class PluginPlaceholderExpansion extends PlaceholderExpansion {
         if(params.equalsIgnoreCase("tokens")){
             return Util.format(DataStore.getPlayerData(player.getPlayer()).tokenBalance);
         }
-        if(params.equalsIgnoreCase("autosmelt")){
-            return DataStore.getPlayerData(player.getPlayer()).autosmelt ? ChatColor.GREEN + "On" : ChatColor.RED + "Off";
-        }
         if(params.equalsIgnoreCase("rank")){
             return DataStore.getPlayerData(player.getPlayer()).rank.name;
         }
@@ -64,6 +59,9 @@ public class PluginPlaceholderExpansion extends PlaceholderExpansion {
         }
         if(params.equalsIgnoreCase("sell_multiplier")){
             return String.valueOf(DataStore.getPlayerData(player.getPlayer()).sellMultiplier);
+        }
+        if(params.equalsIgnoreCase("token_multiplier")){
+            return String.valueOf(DataStore.getPlayerData(player.getPlayer()).tokenMultiplier);
         }
         if(params.equalsIgnoreCase("autosell")){
             if(!player.getPlayer().hasPermission("autosell.toggle")) return ChatColor.RED + "Unavailable";

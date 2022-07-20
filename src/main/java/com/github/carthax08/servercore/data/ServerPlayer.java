@@ -1,16 +1,13 @@
 package com.github.carthax08.servercore.data;
 
 import com.github.carthax08.servercore.Main;
-import com.github.carthax08.servercore.commands.SellCommand;
 import com.github.carthax08.servercore.data.files.DataFileHandler;
 import com.github.carthax08.servercore.data.files.PricesFileHandler;
 import com.github.carthax08.servercore.prestige.Prestige;
 import com.github.carthax08.servercore.prestige.PrestigeHandler;
 import com.github.carthax08.servercore.rankup.Rank;
 import com.github.carthax08.servercore.rankup.RankHandler;
-import com.github.carthax08.servercore.util.Util;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,6 +24,7 @@ public class ServerPlayer {
     public YamlConfiguration config;
     public double sellMultiplier;
     public double tempSellMultiplier = 0;
+    public double tokenMultiplier = 0;
     public Rank rank;
     public boolean autosell;
     public int blocksBroken;

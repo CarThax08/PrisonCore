@@ -1,6 +1,7 @@
 package com.github.carthax08.servercore.commands;
 
 import com.github.carthax08.servercore.util.DataStore;
+import com.github.carthax08.servercore.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -18,7 +19,7 @@ public class TokensCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(args.length == 0 && sender instanceof Player){
-            sender.sendMessage(ChatColor.GREEN + "NovaCoins: " + DataStore.getPlayerData((Player) sender).tokenBalance);
+            sender.sendMessage(ChatColor.GREEN + "NovaCoins: " + Util.format(DataStore.getPlayerData((Player) sender).tokenBalance));
             return true;
         }
         if(!sender.hasPermission("novacoins.edit")){return true;}

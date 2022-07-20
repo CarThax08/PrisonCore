@@ -8,7 +8,6 @@ import com.github.carthax08.servercore.util.DataStore;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
-import net.luckperms.api.node.NodeBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,6 +27,10 @@ public class RankupCommand implements CommandExecutor {
 
         Rank playerRank = playerData.rank;
         Rank nextRank = RankHandler.getNextRank(playerRank);
+        if(nextRank == null){
+            player.sendMessage(ChatColor.GREEN + "You are already at the highest rank! Use /prestige to prestige!");
+            return true;
+        }
 
         if(!(playerData.getMoney() >= nextRank.cost)){
             player.sendMessage(ChatColor.RED + "You do not have enough money for that! You need " + (nextRank.cost - playerData.getMoney()) + " more to rankup!");
@@ -43,7 +46,9 @@ public class RankupCommand implements CommandExecutor {
 
         LuckPerms perms = Main.getPerms();
         User user = perms.getPlayerAdapter(Player.class).getUser(player);
-        user.data().add(Node.builder("group." + nextRank.groupName).build());
+        for (String string : nextRank.permissions){
+            user.data().add(Node.builder(string).build());
+        }
         perms.getUserManager().saveUser(user);
 
         player.sendMessage(ChatColor.GREEN + "You have successfully ranked up to " + nextRank.name + ".");

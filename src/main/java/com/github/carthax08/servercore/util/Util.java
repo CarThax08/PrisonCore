@@ -8,7 +8,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -38,7 +37,7 @@ public class Util {
             Bukkit.getConsoleSender().sendMessage(string);
             ItemStack item = new ItemStack(Material.CHEST, 1);
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(items.getString(string + ".name"));
+            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', items.getString(string + ".name")));
             List<String> lore = new ArrayList<>(items.getStringList(string + ".lore"));
             lore.add("\n");
             lore.add(ChatColor.GOLD + "Cost: " + items.getString(string + ".tokencost"));
@@ -94,5 +93,9 @@ public class Util {
         } else{
             return String.valueOf(value);
         }
+    }
+
+    public static void openBackpackShopGui(Player player) {
+        //Implement Later
     }
 }

@@ -26,7 +26,10 @@ public class PrestigeCommand implements CommandExecutor {
                 ServerPlayer playerData = DataStore.getPlayerData(player);
                 if (playerData != null) {
                     Prestige nextPrestige = PrestigeHandler.getPrestigeByIndex(playerData.pindex + 1);
-                    assert nextPrestige != null;
+                    if(nextPrestige == null){
+                        player.sendMessage(ChatColor.GREEN + "You are already at the highest prestige!");
+                        return true;
+                    }
                     if (playerData.getMoney() >= nextPrestige.cost) {
                         if(!playerData.removeMoney(nextPrestige.cost)){
                             player.sendMessage(ChatColor.RED + "An unknown error has occurred when trying to take money away. Prestige did not succeed.");

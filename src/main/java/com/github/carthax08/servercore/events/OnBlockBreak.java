@@ -3,8 +3,6 @@ package com.github.carthax08.servercore.events;
 import com.github.carthax08.servercore.Main;
 import com.github.carthax08.servercore.commands.SellCommand;
 import com.github.carthax08.servercore.data.ServerPlayer;
-import com.github.carthax08.servercore.data.files.BlocksFileHandler;
-import com.github.carthax08.servercore.data.files.PricesFileHandler;
 import com.github.carthax08.servercore.util.DataStore;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.util.Location;

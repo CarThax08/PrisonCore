@@ -131,6 +131,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OnPlayerLeave(), this);
         getServer().getPluginManager().registerEvents(new GUIClickEvent(), this);
         getServer().getPluginManager().registerEvents(new ClickEvent(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerSwitchItemEvent(), this);
     }
 
     private void registerCommands() {

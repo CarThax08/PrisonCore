@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class SellCommand implements CommandExecutor {
     @Override

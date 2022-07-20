@@ -7,5 +7,31 @@ votelinks:
   - 'https://example.com/vote'
   - 'https://example.com/vote2'
 settings:
-  lastRankGroupName: test
+  permissionsToRemoveOnPrestige:
+    - essentials.warp.a
+    - essentials.warp.b
+    - essentials.warp.c
+    - essentials.warp.d
+    - essentials.warp.e
+    - essentials.warp.f
+    - essentials.warp.g
+    - essentials.warp.h
+    - essentials.warp.i
+    - essentials.warp.j
+    - essentials.warp.k
+    - essentials.warp.l
+    - essentials.warp.m
+    - essentials.warp.n
+    - essentials.warp.o
+    - essentials.warp.p
+    - essentials.warp.q
+    - essentials.warp.r
+    - essentials.warp.s
+    - essentials.warp.t
+    - essentials.warp.u
+    - essentials.warp.v
+    - essentials.warp.w
+    - essentials.warp.x
+    - essentials.warp.y
+    - essentials.warp.z
   backpackBarFormat: "&bYour backpack: &6%amount%&b/&6%max% &bBlocks"
